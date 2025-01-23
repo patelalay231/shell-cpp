@@ -20,12 +20,12 @@ void isExist(const char* command) {
         struct stat sb;
         cout << fullPath << endl;
         if (stat(fullPath.c_str(), &sb) == 0){
-            cout << "The path is valid!";
-            break;
+            cout << command << " is " << fullPath;
+            return;
         }
       }
     
-    std::cout << "Command not found in PATH" << std::endl;
+    cout << input <<": not found\n";
 }
 
 int main(int argc, char* argv[]) {
