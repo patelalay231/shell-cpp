@@ -31,8 +31,6 @@ int main(int argc, char* argv[]) {
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
       const char* path = getenv("PATH");
-    
-      if (path) {
       
       if(mp[check_command]){
         cout << check_command << " is " << path << endl;
