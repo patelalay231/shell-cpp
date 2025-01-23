@@ -19,9 +19,10 @@ void isExist(const char* command) {
         string fullPath = directory + "/" + command;
         struct stat sb;
         cout << fullPath << endl;
-        if (stat(fullPath.c_str(), &sb) == 0)
+        if (stat(fullPath.c_str(), &sb) == 0){
             cout << "The path is valid!";
             break;
+        }
       }
     
     std::cout << "Command not found in PATH" << std::endl;
