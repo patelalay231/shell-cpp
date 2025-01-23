@@ -14,14 +14,6 @@ int main(int argc, char* argv[]) {
   mp["exit"] = 1;
   mp["type"] = 1;
 
-  const char* path = getenv("PATH");
-    
-  if (path) {
-      std::cout << "Dynamic PATH: " << path << "\n";
-  } else {
-      std::cout << "PATH environment variable is not set.\n";
-  }
-
   while(true){
     cout << "$ ";
 
@@ -38,9 +30,12 @@ int main(int argc, char* argv[]) {
     }
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
+      const char* path = getenv("PATH");
     
+      if (path) {
+      
       if(mp[check_command]){
-        cout << check_command << " is a shell builtin\n";
+        cout << check_command << " is " << path << endl;
       }
       else{
         cout << check_command <<": not found\n";
