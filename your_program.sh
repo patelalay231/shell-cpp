@@ -28,4 +28,5 @@ set -e # Exit early if any commands fail
 #     export PATH="$1"
 #     shift
 # fi
+echo "$0"
 exec ./build/shell "$@"
