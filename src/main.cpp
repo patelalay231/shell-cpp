@@ -46,22 +46,25 @@ int main(int argc, char* argv[]) {
 }
 
 void isExist(const std::string& command) {
-    char* pathEnv = getenv("PATH");
-    if (!pathEnv) return;
+  char* pathEnv = getenv("PATH");
+  if (!pathEnv) return false;
 
-    std::string path(pathEnv);
-    std::stringstream ss(path);
-    std::string directory;
-
-    while (getline(ss, directory, ':')) {
-        std::string fullPath = directory + "/" + command;
-        if (fileExists(fullPath)) {
-            std::cout << "Command found in: " << fullPath << std::endl;
-            return;
-        }
-    }
-    
-    std::cout << "Command not found in PATH" << std::endl;
+  std::string path(pathEnv);
+  size_t pos = 0;
+  while ((pos = path.find(':')) != std::string::npos) {
+      std::string dir = path.substr(0, pos);
+      std::string fullPath = dir + "/" + command;
+      
+      if (std::filesystem::exists(fullPath) && 
+          std::filesystem::is_regular_file(fullPath) && 
+          std::filesystem::status(fullPath).permissions() & 
+          std::filesystem::perms::owner_exec) {
+          cout << "yes";
+          return true;
+      }
+      
+      path.erase(0, pos + 1);
+  }
 }
 
 
