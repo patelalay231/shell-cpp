@@ -14,7 +14,7 @@ int main() {
 
     // exist 0 - program terminates with code/status 0.
     string command = input.substr(0,4);
-    if(command == "exit 0"){
+    if(command == "exit"){
       return 0;
     }
     else if(command == "echo"){
