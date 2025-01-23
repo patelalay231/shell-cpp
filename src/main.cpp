@@ -12,6 +12,11 @@ int main() {
     string input;
     getline(cin, input);
 
+    // exist 0 - program terminates with code/status 0.
+    if(input == "exit 0"){
+      return 0;
+    }
+
     cout << input <<": command not found\n";
   }
 }
