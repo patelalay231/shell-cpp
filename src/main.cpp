@@ -25,7 +25,7 @@ void isExist(const char* command) {
         }
       }
     
-    cout << input <<": not found\n";
+    cout << command <<": not found\n";
 }
 
 int main(int argc, char* argv[]) {
