@@ -33,7 +33,7 @@ int main() {
         cout << check_command << " is a shell builtin\n";
       }
       else{
-        cout << check_command <<": command not found\n";
+        cout << check_command <<": not found\n";
       }
     }
     else{
