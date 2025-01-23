@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
       if(mp[check_command]){
-        cout << command << " is a shell builtin\n";
+        cout << check_command << " is a shell builtin\n";
       }
       else{
         isExist(check_command.c_str());
