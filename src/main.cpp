@@ -3,13 +3,29 @@
 #include <map>
 #include <cstdlib>
 #include <sstream>
-#include <fstream>
-#include <filesystem>
+#include <sys/stat.h>
 
 using namespace std;
 
-void isExist(string& command);
-bool fileExists(const std::string& filename);
+void isExist(const char* command) {
+    char* pathEnv = getenv("PATH");
+    if (!pathEnv) return;
+
+    string path(pathEnv);
+    stringstream ss(path);
+    string directory;
+
+    while (getline(ss, directory, ':')) {
+        string fullPath = directory + "/" + command;
+        struct stat sb;
+ 
+        if (stat(fullPath.c_str(), &sb) == 0)
+            cout << "The path is valid!";
+            break;
+      }
+    
+    std::cout << "Command not found in PATH" << std::endl;
+}
 
 int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
@@ -37,7 +53,7 @@ int main(int argc, char* argv[]) {
     }
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
-      isExist(check_command);
+      isExist(check_command.c_str());
     }
     else{
       cout << input <<": command not found\n";
@@ -45,32 +61,6 @@ int main(int argc, char* argv[]) {
   }
 }
 
-void isExist(const std::string& command) {
-  char* pathEnv = getenv("PATH");
-  if (!pathEnv) return false;
-
-  std::string path(pathEnv);
-  size_t pos = 0;
-  while ((pos = path.find(':')) != std::string::npos) {
-      std::string dir = path.substr(0, pos);
-      std::string fullPath = dir + "/" + command;
-      
-      if (std::filesystem::exists(fullPath) && 
-          std::filesystem::is_regular_file(fullPath) && 
-          std::filesystem::status(fullPath).permissions() & 
-          std::filesystem::perms::owner_exec) {
-          cout << "yes";
-          return true;
-      }
-      
-      path.erase(0, pos + 1);
-  }
-}
 
 
-bool fileExists(const std::string& filename) {
-    return std::filesystem::exists(filename) && 
-           std::filesystem::is_regular_file(filename) && 
-           std::filesystem::status(filename).permissions() & 
-           std::filesystem::perms::owner_exec;
-}
+
