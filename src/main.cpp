@@ -61,6 +61,6 @@ void isExist(string& command){
 }
 
 bool fileExists(const string& filename) {
-    ifstream file(filename);
+    std::ifstream file(filename);
     return file.good();
 }
