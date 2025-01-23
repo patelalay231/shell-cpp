@@ -3,10 +3,10 @@
 #include <map>
 #include <cstdlib>
 #include <sstream>
+#include <fstream>
 #include <filesystem>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 void isExist(string& command);
 bool fileExists(const std::string& filename);
@@ -45,22 +45,29 @@ int main(int argc, char* argv[]) {
   }
 }
 
-void isExist(string& command){
-  char* pathEnv = getenv("PATH");
-  string path(pathEnv);
-  stringstream ss(path);
-  string directory;
-  
-  while (getline(ss, directory, ':')) {
-      string filename = directory + '\'' + command;
-      if(fileExists(filename)){
-        cout << "command found" << endl;
-      }
-      cout << directory << endl;
-  }
+void isExist(const std::string& command) {
+    char* pathEnv = getenv("PATH");
+    if (!pathEnv) return;
+
+    std::string path(pathEnv);
+    std::stringstream ss(path);
+    std::string directory;
+
+    while (getline(ss, directory, ':')) {
+        std::string fullPath = directory + "/" + command;
+        if (fileExists(fullPath)) {
+            std::cout << "Command found in: " << fullPath << std::endl;
+            return;
+        }
+    }
+    
+    std::cout << "Command not found in PATH" << std::endl;
 }
 
-bool fileExists(const string& filename) {
-    std::ifstream file(filename);
-    return file.good();
+
+bool fileExists(const std::string& filename) {
+    return std::filesystem::exists(filename) && 
+           std::filesystem::is_regular_file(filename) && 
+           std::filesystem::status(filename).permissions() & 
+           std::filesystem::perms::owner_exec;
 }
