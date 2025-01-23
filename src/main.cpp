@@ -18,9 +18,8 @@ void isExist(const char* command) {
     while (getline(ss, directory, ':')) {
         string fullPath = directory + "/" + command;
         struct stat sb;
-        cout << fullPath << endl;
         if (stat(fullPath.c_str(), &sb) == 0){
-            cout << command << " is " << fullPath;
+            cout << command << " is " << fullPath << endl;
             return;
         }
       }
