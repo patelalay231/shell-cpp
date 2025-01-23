@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <cstdlib>
+
 using namespace std;
-int main() {
+int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
   cout << unitbuf;
   cerr << unitbuf;
@@ -12,6 +14,14 @@ int main() {
   mp["exit"] = 1;
   mp["type"] = 1;
 
+  const char* path = getenv("PATH");
+    
+  if (path) {
+      std::cout << "Dynamic PATH: " << path << "\n";
+  } else {
+      std::cout << "PATH environment variable is not set.\n";
+  }
+
   while(true){
     cout << "$ ";
 
@@ -19,7 +29,6 @@ int main() {
     getline(cin, input);
 
     
-
     string command = input.substr(0,4);
     if(command == "exit"){
       return 0;
@@ -29,6 +38,7 @@ int main() {
     }
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
+    
       if(mp[check_command]){
         cout << check_command << " is a shell builtin\n";
       }
