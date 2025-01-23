@@ -2,8 +2,12 @@
 #include <string>
 #include <map>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
+
+void isExist(string& command);
+
 int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
   cout << unitbuf;
@@ -30,17 +34,22 @@ int main(int argc, char* argv[]) {
     }
     else if(command == "type"){
       string check_command = input.substr(5,input.length());
-      const char* path = getenv("PATH");
-      cout << path << endl;
-      if(mp[check_command]){
-        cout << check_command << " is " << path << endl;
-      }
-      else{
-        cout << check_command <<": not found\n";
-      }
+      isExist(check_command);
     }
     else{
       cout << input <<": command not found\n";
     }
+  }
+}
+
+
+void isExist(string& command){
+  char* pathEnv = getenv("PATH");
+  string path(pathEnv);
+  stringstream ss(path);
+  string directory;
+  
+  while (getline(ss, directory, ':')) {
+      cout << directory << endl;
   }
 }
