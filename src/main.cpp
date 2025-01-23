@@ -3,10 +3,13 @@
 #include <map>
 #include <cstdlib>
 #include <sstream>
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 void isExist(string& command);
+bool fileExists(const std::string& filename);
 
 int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
@@ -42,7 +45,6 @@ int main(int argc, char* argv[]) {
   }
 }
 
-
 void isExist(string& command){
   char* pathEnv = getenv("PATH");
   string path(pathEnv);
@@ -50,6 +52,15 @@ void isExist(string& command){
   string directory;
   
   while (getline(ss, directory, ':')) {
+      string filename = directory + '\'' + command;
+      if(fileExists(filename)){
+        cout << "command found" << endl;
+      }
       cout << directory << endl;
   }
+}
+
+bool fileExists(const string& filename) {
+    ifstream file(filename);
+    return file.good();
 }
