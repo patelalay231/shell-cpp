@@ -58,32 +58,18 @@ int main() {
         }
         // Handle the "echo" command 
         else if (command == "echo") {
-    if (input.front() == '\'') {
-        input = input.substr(1, input.length() - 2); // Remove the surrounding single quotes
-    }
-
-    int i = 0;
-    while (i < input.length()) {
-        // Skip leading spaces and apostrophes
-        while (i < input.length() && (input[i] == ' ' || input[i] == '\'')) {
-            i++;
+            if(input.front() == '\''){
+              input = input.substr(1,input.length()-2);
+            }
+            int i=0;
+            while(i < input.length()){
+              while(i < input.length() && (input[i] == ' ' || input[i] != '\'')) i++;
+              string result = "";
+              while(i < input.length() && input[i] != ' ' && input[i] != '\'') result += input[i++];
+              cout << result << " ";
+            }
+            cout << endl;
         }
-
-        string result = "";
-        // Collect characters until encountering a space or apostrophe
-        while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
-            result += input[i++];
-        }
-
-        // Print the result if it's not empty
-        if (!result.empty()) {
-            cout << result << " ";
-        }
-    }
-
-    cout << endl;
-}
-
         // Handle the "type" command
         else if (command == "type") {
             if (shell_builtins[input]) {
