@@ -77,7 +77,7 @@ int main() {
           std::filesystem::path current_path = std::filesystem::current_path();
         
           // Output the current path
-          std::cout << current_path << std::endl;
+          std::cout << current_path.string() << std::endl;
         }
         // For other commands, try to find their path and execute them
         else {
