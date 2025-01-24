@@ -79,12 +79,13 @@ int main() {
             while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
                 temp += input[i++];
             }
-        }
-
-        // Skip spaces between unquoted words
+            // Skip spaces between unquoted words
         while (i < input.length() && input[i] == ' ') {
             i++;
         }
+        }
+
+        
 
         // Append temp to the result with appropriate spacing
         if (!temp.empty()) {
