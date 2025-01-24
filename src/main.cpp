@@ -61,11 +61,21 @@ int main() {
             if(input.front() == '\''){
               string msg = input.substr(1,input.length()-2);
               int i=0;
-              while(i < msg.length()){
-                while(i <= msg.length() && msg[i] == ' ') i++;
-                string result = "";
-                while(i <= msg.length() && msg[i] != ' ') result += msg[i++];
-                cout << result << " ";
+              while (i < msg.length()) {
+                  // Skip leading spaces
+                  while (i < msg.length() && msg[i] == ' ') i++;
+                  
+                  // Extract the next word
+                  string result = "";
+                  while (i < msg.length() && msg[i] != ' ') {
+                      result += msg[i];
+                      i++;
+                  }
+                  
+                  // If a word was extracted, print it
+                  if (!result.empty()) {
+                      cout << result << " ";
+                  }
               }
               cout << endl;
             }
