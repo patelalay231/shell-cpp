@@ -58,36 +58,46 @@ int main() {
         }
         // Handle the "echo" command 
         else if (command == "echo") {
-          string result = "";
-          int i = 0;
+    string result = "";
+    int i = 0;
 
-          while (i < input.length()){
-            string temp = "";
-            // handling single-quote message
-            if(input[i] == '\''){
-              i++;
-              while(i < input.length() && input[i] != '\''){
+    while (i < input.length()) {
+        string temp = "";
+
+        // Handle single-quoted messages
+        if (input[i] == '\'') {
+            i++; // Skip the opening quote
+            while (i < input.length() && input[i] != '\'') {
                 temp += input[i++];
-              }
-              if (i < input.length() && input[i] == '\'') {
+            }
+            if (i < input.length() && input[i] == '\'') {
                 i++; // Skip the closing quote
-              }
-              cout << temp;
             }
-            //handling without single-quote message
-            else{
-              while(i < input.length() && input[i] != ' ' && input[i] != '\''){
-                temp += input[i++];
-              }
-            // Skip leading spaces incase of previous message is without single quote
-              while (i < input.length() && input[i] == ' ') {
-                i++;
-              }
-              cout << temp << " ";
-            }
-          }
-            cout << endl;
         }
+        // Handle unquoted messages
+        else {
+            while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
+                temp += input[i++];
+            }
+        }
+
+        // Skip spaces between unquoted words
+        while (i < input.length() && input[i] == ' ') {
+            i++;
+        }
+
+        // Append temp to the result with appropriate spacing
+        if (!temp.empty()) {
+            if (!result.empty()) {
+                result += " "; // Add a space before the next word
+            }
+            result += temp;
+        }
+    }
+
+    cout << result << endl;
+}
+
 
         // Handle the "type" command
         else if (command == "type") {
