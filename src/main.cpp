@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
           cout << input << " is " << get_command_path << endl;
         }
         else{
-          cout << command <<": not found\n";
+          cout << input <<": not found\n";
         }
       }
     }
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
           system(exe_file_path.c_str());
       }
       else{
-        cout << input <<": command not found\n";
+        cout << command <<": command not found\n";
       }
     }
   }
