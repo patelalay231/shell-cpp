@@ -97,6 +97,10 @@ int main() {
               cout << "cd: " << path << ": No such file or directory\n";
             }
           }
+          else{
+            string home_dir_path = getenv("HOME");
+            filesystem::current_path(home_dir_path);
+          }
         }
         // For other commands, try to find their path and execute them
         else {
