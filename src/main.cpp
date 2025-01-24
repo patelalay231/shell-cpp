@@ -5,7 +5,7 @@
 #include <sstream>
 #include <filesystem>
 
-using namespace std,filesystem;
+using namespace std;
 
 string isExist(const char* command){
   char* pathEnv = getenv("PATH");
@@ -17,7 +17,7 @@ string isExist(const char* command){
   while(!ss.eof()){
     getline(ss, path, ':');
     string fullpath = directory + "/" + command;
-    if(exists(fullpath)){
+    if(filesystem::exists(fullpath)){
       return fullpath;
     }
   }
