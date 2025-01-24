@@ -4,11 +4,12 @@
 #include <cstdlib>
 #include <sstream>
 #include <sys/stat.h>
+#include <filesystem>
 
 using namespace std;
 
 // Function to check if a command exists in the system PATH
-string isExist(const string& command) {
+string getFilePath(const string& command) {
     string path_env = getenv("PATH");
     stringstream ss(path_env);
     string path;
@@ -35,7 +36,8 @@ int main() {
     map<string, int> shell_builtins = {
         {"echo", 1},
         {"exit", 1},
-        {"type", 1}
+        {"type", 1},
+        {"pwd", 1}
     };
 
     // Start a loop to simulate the shell
@@ -62,7 +64,7 @@ int main() {
             if (shell_builtins[input]) {
                 cout << input << " is a shell builtin\n";
             } else {
-                string command_path = isExist(input);
+                string command_path = getFilePath(input);
                 if (!command_path.empty()) {
                     cout << input << " is " << command_path << endl;
                 } else {
@@ -70,9 +72,13 @@ int main() {
                 }
             }
         }
+        // Handle the "pwd" command
+        else if(command == "pwd"){
+          cout << std::filesystem::current_path() << endl;
+        }
         // For other commands, try to find their path and execute them
         else {
-            string command_path = isExist(command);
+            string command_path = getFilePath(command);
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
