@@ -91,6 +91,7 @@ int main() {
           else if(path[0] == '.'){
             try{
               path = filesystem::current_path().string() + path.substr(1,path.length()); 
+              filesystem::current_path(path);
             }catch(const filesystem::filesystem_error& e){
               cout << "cd: " << path << ": No such file or directory\n";
             }
