@@ -61,9 +61,9 @@ int main() {
             if(input.front() =='\'') input = input.substr(1,input.length()-2);
             int i=0;
             while(i < input.length()){
-              while(i < input.length() && input[i] == ' ' && input[i] != '\'') i++;
+              while(i < input.length() && input[i] == ' ' || input[i] != '\'') i++;
               string result = "";
-              while(i < input.length() && input[i] != ' ' && input[i] != '\'') result += input[i++];
+              while(i < input.length() && input[i] != ' ' || input[i] != '\'') result += input[i++];
               cout << result << " ";
             }
             cout << endl;
