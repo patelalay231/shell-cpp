@@ -58,7 +58,7 @@ int main() {
         }
         // Handle the "echo" command
         else if (command == "echo") {
-            if(input[0] == "'"){
+            if(input[0] == "\'"){
               cout << input.substr(1,input.length()-1) << endl;
             }
             else{
