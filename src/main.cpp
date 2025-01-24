@@ -59,10 +59,14 @@ int main() {
         // Handle the "echo" command
         else if (command == "echo") {
             if(input.front() == '\''){
-              stringstream ss(input.substr(1,input.length()-2));
-              string result;
-              while(getline(ss,result,' ')){
+              string msg = input.substr(1,input.length()-2);
+              int i=0;
+              while(i <= msg.length()){
+                while(msg[i] == ' ') i++;
+                string result;
+                getline(msg,result,' ');
                 cout << result << " ";
+                i+=result.size();
               }
               cout << endl;
             }
