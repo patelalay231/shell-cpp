@@ -63,10 +63,9 @@ int main() {
               int i=0;
               while(i <= msg.length()){
                 while(msg[i] == ' ') i++;
-                string result ="";
+                string result = "";
                 while(msg[i] != ' ') result += msg[i++];
                 cout << result << " ";
-                i+=result.size();
               }
               cout << endl;
             }
