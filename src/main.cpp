@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
       else{
         string get_command_path = isExist(input);
         if(get_command_path){
-          cout << input << " is " << fullPath << endl;
+          cout << input << " is " << get_command_path << endl;
         }
         else{
           cout << command <<": not found\n";
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     else if(endsWithExtension(command,".exe")){
       string get_command_path = isExist(check_command);
       if(get_command_path){
-        cout << input << " is " << fullPath << endl;
+        cout << input << " is " << get_command_path << endl;
       }
       else{
         cout << command <<": not found\n";
