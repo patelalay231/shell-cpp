@@ -87,15 +87,21 @@ int main() {
               cout << "cd: " << path << ": No such file or directory\n";
             }
           }
-          // Navigating in relative path
+          // Navigating in relative path ./, ../, ./dir
           else if(path[0] == '.'){
-            try{
-              path = filesystem::current_path().string() + path.substr(1,path.length()); 
-              filesystem::current_path(path);
-            }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": No such file or directory\n";
-            }
+              try{
+                  // If the path starts with '.', handle it relative to the current working directory
+                  filesystem::path new_path = filesystem::current_path() / path.substr(1);
+                  if (filesystem::exists(new_path) && filesystem::is_directory(new_path)) {
+                      filesystem::current_path(new_path); // Change to the new directory
+                  } else {
+                      std::cout << "cd: " << new_path << ": No such file or directory\n";
+                  }
+              }catch(const fs::filesystem_error& e){
+                  std::cout << "cd: " << path << ": No such file or directory\n";
+              }
           }
+
         }
         // For other commands, try to find their path and execute them
         else {
