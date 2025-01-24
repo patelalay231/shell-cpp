@@ -89,12 +89,12 @@ int main() {
           }
           // Navigating in relative path ./, ../, ./dir
           else if(path[0] == '.'){
-            std::string cwd = std::filesystem::current_path().string();
-            std::string dir = cwd + '/' + path;
-            cwd = std::filesystem::canonical(dir);
+            string cwd = filesystem::current_path().string();
+            string dir = cwd + '/' + path;
+            cwd = filesystem::canonical(dir);
             if (chdir(cwd.c_str()) == -1)
-              std::cout << "cd: " << path << ": No such file or directory" << std::endl;
-            }
+              cout << "cd: " << path << ": No such file or directory" << endl;
+      
           }
         }
         // For other commands, try to find their path and execute them
