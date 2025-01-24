@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
           system(exe_file_path.c_str());
       }
       else{
-        cout << command <<": command not found\n";
+        cout << command <<": not found\n";
       }
     }
   }
