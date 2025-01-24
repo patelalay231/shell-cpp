@@ -84,7 +84,7 @@ int main() {
             try{
               filesystem::current_path(path);
             }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": " << e.what() << endl;
+              cout << "cd: " << path << ": No such file or directory\n";
             }
           }
         }
