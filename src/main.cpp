@@ -49,9 +49,9 @@ int main(int argc, char* argv[]) {
     string input;
     getline(cin, input);
 
-    
     string command = input.substr(0,input.find(" "));
     input.erase(0,input.find(" ")+1);
+
     if(command == "exit"){
       return 0;
     }
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
         cout << input << " is a shell builtin\n";
       }
       else{
-        string get_command_path = isExist(input);
+        string get_command_path = isExist(input.c_str());
         if(!get_command_path.empty()){
           cout << input << " is " << get_command_path << endl;
         }
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
       }
     }
     else if(endsWithExtension(command,".exe")){
-      string get_command_path = isExist(command);
+      string get_command_path = isExist(command.c_str());
       if(!get_command_path.empty()){
         cout << input << " is " << get_command_path << endl;
       }
