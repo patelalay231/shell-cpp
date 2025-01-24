@@ -3,26 +3,23 @@
 #include <map>
 #include <cstdlib>
 #include <sstream>
-#include <filesystem>
-
+#include <sys/stat.h>
 using namespace std;
 
-string isExist(const char* command){
-  char* pathEnv = getenv("PATH");
-  if(!pathEnv) return;
-
-  string path(pathEnv);
-  stringstream ss(path);
-
-  while(!ss.eof()){
-    getline(ss, path, ':');
-    string fullpath = directory + "/" + command;
-    if(filesystem::exists(fullpath)){
-      return fullpath;
+string isExist(string command){
+    string path_env = getenv("PATH");
+    stringstream ss(path_env);
+    string path;
+    
+    while(!ss.eof()){
+        getline(ss, path, ':');
+        string abs_path = path + "/" + command;
+        struct stat sb;
+        if(stat(abs_path.c_str(),&sb) == 0){
+            return abs_path;
+        }
     }
-  }
-
-  return "";
+    return "";  
 }
 
 bool endsWithExtension(const string& filePath, const string extension) {
@@ -63,7 +60,7 @@ int main(int argc, char* argv[]) {
         cout << input << " is a shell builtin\n";
       }
       else{
-        string get_command_path = isExist(input.c_str());
+        string get_command_path = isExist(input);
         if(!get_command_path.empty()){
           cout << input << " is " << get_command_path << endl;
         }
@@ -73,7 +70,7 @@ int main(int argc, char* argv[]) {
       }
     }
     else if(endsWithExtension(command,".exe")){
-      string get_command_path = isExist(command.c_str());
+      string get_command_path = isExist(command);
       if(!get_command_path.empty()){
         cout << input << " is " << get_command_path << endl;
       }
