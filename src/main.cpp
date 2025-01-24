@@ -82,7 +82,7 @@ int main() {
           string path = input;
           if(path[0] == '/'){
             filesystem::current_path(file_path);
-            else{
+            if(filesystem::current_path().string() !=  path){
               cout << "cd: " << path << ": No such file or directory";
             }
           }
