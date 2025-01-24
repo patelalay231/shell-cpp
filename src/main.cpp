@@ -4,76 +4,82 @@
 #include <cstdlib>
 #include <sstream>
 #include <sys/stat.h>
+
 using namespace std;
 
-string isExist(string command){
+// Function to check if a command exists in the system PATH
+string isExist(const string& command) {
     string path_env = getenv("PATH");
     stringstream ss(path_env);
     string path;
     
-    while(!ss.eof()){
-        getline(ss, path, ':');
+    // Iterate through all directories in the PATH
+    while (getline(ss, path, ':')) {
         string abs_path = path + "/" + command;
         struct stat sb;
-        if(stat(abs_path.c_str(),&sb) == 0){
-            return abs_path;
+        
+        // Check if the command exists in the current directory
+        if (stat(abs_path.c_str(), &sb) == 0) {
+            return abs_path;  // Return the absolute path if the command exists
         }
     }
-    return "";  
+    return "";  // Return empty string if command is not found
 }
 
-int main(int argc, char* argv[]) {
-  // Flush after every std::cout / std:cerr
-  cout << unitbuf;
-  cerr << unitbuf;
+int main() {
+    // Ensure the output is flushed immediately after each statement
+    cout << unitbuf;
+    cerr << unitbuf;
 
-  map<string,int> mp;
-  mp["echo"] = 1;  
-  mp["exit"] = 1;
-  mp["type"] = 1;
+    // Map for built-in shell commands
+    map<string, int> shell_builtins = {
+        {"echo", 1},
+        {"exit", 1},
+        {"type", 1}
+    };
 
-  while(true){
-    cout << "$ ";
+    // Start a loop to simulate the shell
+    while (true) {
+        cout << "$ ";  // Prompt the user for input
 
-    string input;
-    getline(cin, input);
+        string input;
+        getline(cin, input);  // Get the user input
 
-    string command = input.substr(0,input.find(" "));
-    input.erase(0,input.find(" ")+1);
+        // Extract the command and arguments
+        string command = input.substr(0, input.find(" "));
+        input.erase(0, input.find(" ") + 1);
 
-    if(command == "exit"){
-      return 0;
-    }
-    else if(command == "echo"){
-      cout << input << endl;
-    }
-    else if(command == "type"){
-      if(mp[input]){
-        cout << input << " is a shell builtin\n";
-      }
-      else{
-        string get_command_path = isExist(input);
-        if(!get_command_path.empty()){
-          cout << input << " is " << get_command_path << endl;
+        // Handle the "exit" command to break the loop and terminate the program
+        if (command == "exit") {
+            return 0;
         }
-        else{
-          cout << input <<": not found\n";
+        // Handle the "echo" command
+        else if (command == "echo") {
+            cout << input << endl;
         }
-      }
+        // Handle the "type" command
+        else if (command == "type") {
+            if (shell_builtins[input]) {
+                cout << input << " is a shell builtin\n";
+            } else {
+                string command_path = isExist(input);
+                if (!command_path.empty()) {
+                    cout << input << " is " << command_path << endl;
+                } else {
+                    cout << input << ": not found\n";
+                }
+            }
+        }
+        // For other commands, try to find their path and execute them
+        else {
+            string command_path = isExist(command);
+            if (!command_path.empty()) {
+                // Execute the command with arguments
+                string full_command = command + ' ' + input;
+                system(full_command.c_str());
+            } else {
+                cout << command << ": not found\n";
+            }
+        }
     }
-    else{
-      string get_command_path = isExist(command);
-      if(!get_command_path.empty()){
-          string exe_file_path = command + ' '+ input;
-          system(exe_file_path.c_str());
-      }
-      else{
-        cout << command <<": not found\n";
-      }
-    }
-  }
 }
-
-
-
-
