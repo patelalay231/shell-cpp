@@ -60,7 +60,7 @@ int main() {
         else if (command == "echo") {
             if(input.front() == '\''){
               stringstream ss = input.substr(1,input.length()-2);
-              stirng result;
+              string result;
               while(getline(ss,result,' ')){
                 cout << result << " ";
               }
