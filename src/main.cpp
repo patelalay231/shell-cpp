@@ -25,6 +25,13 @@ string isExist(const char* command){
   return "";
 }
 
+bool endsWithExtension(const string& filePath, const string extension) {
+    if (extension.length() > filePath.length()) {
+        return false;
+    }
+    
+    return filePath.compare(filePath.length() - extension.length(), extension.length(), extension) == 0;
+}
 // void isExist(const char* command) {
 //     char* pathEnv = getenv("PATH");
 //     if (!pathEnv) return;
@@ -62,26 +69,35 @@ int main(int argc, char* argv[]) {
     getline(cin, input);
 
     
-    string command = input.substr(0,4);
+    string command = input.substr(0,input.find(" "));
+    input.erase(0,input.find(" ")+1);
     if(command == "exit"){
       return 0;
     }
     else if(command == "echo"){
-      cout << input.substr(5,input.length()) << endl;
+      cout << input << endl;
     }
     else if(command == "type"){
-      string check_command = input.substr(5,input.length());
-      if(mp[check_command]){
-        cout << check_command << " is a shell builtin\n";
+      if(mp[input]){
+        cout << input << " is a shell builtin\n";
       }
       else{
-        string get_command_path = isExist(check_command);
+        string get_command_path = isExist(input);
         if(get_command_path){
-          cout << check_command << " is " << fullPath << endl;
+          cout << input << " is " << fullPath << endl;
         }
         else{
           cout << command <<": not found\n";
         }
+      }
+    }
+    else if(endsWithExtension(command,".exe")){
+      string get_command_path = isExist(check_command);
+      if(get_command_path){
+        cout << input << " is " << fullPath << endl;
+      }
+      else{
+        cout << command <<": not found\n";
       }
     }
     else{
