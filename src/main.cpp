@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
     else{
       string get_command_path = isExist(command);
       if(!get_command_path.empty()){
-          string exe_file_path = get_command_path '/'+ input;
+          string exe_file_path = get_command_path + '/'+ input;
           int result = system(exe_file_path);
 
           if (result == 0) {
