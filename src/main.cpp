@@ -81,7 +81,7 @@ int main() {
           // Nevigating in absoulute path
           string path = input;
           if(path[0] == '/'){
-            filesystem::current_path(file_path);
+            filesystem::current_path(path);
             if(filesystem::current_path().string() !=  path){
               cout << "cd: " << path << ": No such file or directory";
             }
