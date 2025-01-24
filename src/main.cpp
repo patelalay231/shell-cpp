@@ -58,45 +58,36 @@ int main() {
         }
         // Handle the "echo" command 
         else if (command == "echo") {
-    string result = "";
-    int i = 0;
+          string result = "";
+          int i = 0;
 
-    while (i < input.length()) {
-        // Skip leading spaces
-        while (i < input.length() && input[i] == ' ') {
-            i++;
-        }
-
-        string temp = ""; // Temporary string to hold the current word or quoted section
-
-        // Handling single-quoted strings
-        if (i < input.length() && input[i] == '\'') {
-            i++; // Skip the opening quote
-            while (i < input.length() && input[i] != '\'') {
-                temp += input[i++];
+          while (i < input.length()){
+            // Skip leading spaces
+            while (i < input.length() && input[i] == ' ') {
+                i++;
             }
-            if (i < input.length() && input[i] == '\'') {
+            string temp = "";
+            // handling single-quote message
+            if(input[i] == '\''){
+              i++;
+              while(i < input.length() && input[i] != '\''){
+                temp += input[i++];
+              }
+              if (i < input.length() && input[i] == '\'') {
                 i++; // Skip the closing quote
+              }
+              cout << temp;
             }
-        } else {
-            // Handling unquoted words
-            while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
+            //handling without single-quote message
+            else{
+              while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
+              }
+              cout << temp << " ";
             }
+          }
+            cout << endl;
         }
-
-        // Add temp to the result with appropriate spacing
-        if (!temp.empty()) {
-            if (!result.empty()) {
-                result += " "; // Add a single space before appending temp
-            }
-            result += temp;
-        }
-    }
-
-    cout << result << endl;
-}
-
 
         // Handle the "type" command
         else if (command == "type") {
