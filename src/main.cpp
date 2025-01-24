@@ -78,7 +78,7 @@ int main() {
           cout << filesystem::current_path().string() << endl;
         }
         else if(command == "cd"){
-          string path = input;
+          file path = input;
           // Navigating in absoulute path
           if(path[0] == '/'){
             try{
@@ -91,8 +91,9 @@ int main() {
           else if(path[0] == '.'){
             try{
               path = filesystem::current_path().string() + '/' + path; 
+              filesystem::path final_path = path;
               cout << path << endl;
-              filesystem::canonical(path);
+              filesystem::canonical(final_path);
             }catch(const filesystem::filesystem_error& e){
               cout << "cd: " << path << ": No such file or directory\n";
             }
