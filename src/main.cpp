@@ -61,7 +61,7 @@ int main() {
             if(input.front() == '\''){
               string msg = input.substr(1,input.length()-2);
               int i=0;
-              while(i <= msg.length()){
+              while(i < msg.length()){
                 while(i <= msg.length() && msg[i] == ' ') i++;
                 string result = "";
                 while(i <= msg.length() && msg[i] != ' ') result += msg[i++];
