@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
       }
     }
     else if(endsWithExtension(command,".exe")){
-      string get_command_path = isExist(check_command);
+      string get_command_path = isExist(command);
       if(!get_command_path.empty()){
         cout << input << " is " << get_command_path << endl;
       }
