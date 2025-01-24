@@ -74,10 +74,7 @@ int main() {
         }
         // Handle the "pwd" command
         else if(command == "pwd"){
-          std::filesystem::path current_path = std::filesystem::current_path();
-        
-          // Output the current path
-          std::cout << current_path.string() << std::endl;
+          cout << filesystem::current_path().string() << endl;
         }
         // For other commands, try to find their path and execute them
         else {
