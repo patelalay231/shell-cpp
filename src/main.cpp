@@ -80,7 +80,7 @@ int main() {
             i++;
             cout << result;
           }
-              
+            cout << endl;
         }
 
         // Handle the "type" command
