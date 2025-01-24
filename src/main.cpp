@@ -90,8 +90,9 @@ int main() {
           // Navigating in relative path ./, ../, ./dir
           else if(path[0] == '.'){
             try{
-              path = filesystem::current_path().string() + '/' + path; 
-              string cwd = filesystem::canonical(path);
+              string cwd = filesystem::current_path().string();
+              string dir = cwd + '/' + path; 
+              cwd = filesystem::canonical(dir);
             }catch(const filesystem::filesystem_error& e){
               cout << "cd: " << path << ": No such file or directory\n";
             }
