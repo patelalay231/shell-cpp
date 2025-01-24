@@ -59,7 +59,7 @@ int main() {
         // Handle the "echo" command
         else if (command == "echo") {
             if(input[0] == "'"){
-              cout << input.string() << endl;
+              cout << input.substr(1,input.length()-1) << endl;
             }
             else{
               cout << input << endl;
