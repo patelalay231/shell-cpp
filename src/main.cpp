@@ -61,29 +61,26 @@ int main() {
           string result = "";
           int i = 0;
 
-          while (i < input.length()) {
-              // Skip leading spaces
-              while (i < input.length() && input[i] == ' ') {
-                  result += input[i++];
-              }
-
-              // Handle quoted strings
-              if (i < input.length() && input[i] == '\'') {
-                  i++; // Skip the opening quote
-                  while (i < input.length() && input[i] != '\'') {
-                      result += input[i++];
-                  }
-                  if (i < input.length() && input[i] == '\'') {
-                      i++; // Skip the closing quote
-                  }
-              } else {
-                  while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
-                      result += input[i++];
-                  }
-                  while (i < input.length() && input[i] == ' ') i++;
+          while (i < input.length()){
+            string result = "";
+            // handling single-quote message
+            if(input[i] == '\''){
+              while(i < input.length() && input[i] != '\''){
+                result += input[i];
+                i++;
               }
             }
-            cout << result << endl;
+            //handling without single-quote message
+            else{
+              while(i < input.length() && input[i] != ' ' && input[i] != '\''){
+                result += input[i];
+                i++;
+              }
+            }
+            i++;
+            cout << result;
+          }
+              
         }
 
         // Handle the "type" command
