@@ -79,7 +79,7 @@ int main() {
               } else {
                   while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
                       result += input[i++];
-                      while (i < input.length() && input[i] != ' ') i++;
+                      while (i < input.length() && input[i] == ' ') i++;
                   }
               }
             }
