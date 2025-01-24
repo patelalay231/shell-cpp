@@ -64,7 +64,7 @@ int main() {
               while(i <= msg.length()){
                 while(msg[i] == ' ') i++;
                 string result;
-                getline(msg,result,' ');
+                while(msg[i] != ' ') result += msg[i++];
                 cout << result << " ";
                 i+=result.size();
               }
