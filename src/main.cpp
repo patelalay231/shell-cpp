@@ -37,7 +37,8 @@ int main() {
         {"echo", 1},
         {"exit", 1},
         {"type", 1},
-        {"pwd", 1}
+        {"pwd", 1},
+        {"cd" , 1}
     };
 
     // Start a loop to simulate the shell
@@ -75,6 +76,19 @@ int main() {
         // Handle the "pwd" command
         else if(command == "pwd"){
           cout << filesystem::current_path().string() << endl;
+        }
+        else if(command == "cd"){
+          // Nevigating in absoulute path
+          string path = input;
+          if(path[0] == '/'){
+            string file_path = getFilePath(path);
+            if(!file_path.empty()){
+              filesystem::current_path(file_path);
+            }
+            else{
+              cout << "cd:" << path << ": No such file or directory";
+            }
+          }
         }
         // For other commands, try to find their path and execute them
         else {
