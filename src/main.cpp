@@ -58,20 +58,15 @@ int main() {
         }
         // Handle the "echo" command
         else if (command == "echo") {
-            if(input.front() == '\''){
-              string msg = input.substr(1,input.length()-2);
-              int i=0;
-              while(i < msg.length()){
-                while(i < msg.length() && msg[i] == ' ') i++;
-                string result = "";
-                while(i < msg.length() && msg[i] != ' ') result += msg[i++];
-                cout << result << " ";
-              }
-              cout << endl;
+            if(input.front() =='\'') input = input.substr(1,input.length()-2);
+            int i=0;
+            while(i < input.length()){
+              while(i < input.length() && input[i] == ' ') i++;
+              string result = "";
+              while(i < input.length() && input[i] != ' ') result += input[i++];
+              cout << result << " ";
             }
-            else{
-              // cout << input << endl;
-            }
+            cout << endl;
         }
         // Handle the "type" command
         else if (command == "type") {
