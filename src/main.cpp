@@ -58,7 +58,12 @@ int main() {
         }
         // Handle the "echo" command
         else if (command == "echo") {
-            cout << input << endl;
+            if(input[0] == "'"){
+              cout << input.string() << endl;
+            }
+            else{
+              cout << input << endl;
+            }
         }
         // Handle the "type" command
         else if (command == "type") {
