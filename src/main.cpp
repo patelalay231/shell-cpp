@@ -83,8 +83,8 @@ int main() {
           if(path[0] == '/'){
             try{
               filesystem::current_path(path);
-            }catch(errc){
-              cout << "cd: " << path << ": No such file or directory";
+            }catch(const filesystem::filesystem_error& e){
+              cout << "cd: " << path << ": " << e.what() << endl;
             }
           }
         }
