@@ -62,10 +62,6 @@ int main() {
           int i = 0;
 
           while (i < input.length()){
-            // Skip leading spaces
-            while (i < input.length() && input[i] == ' ') {
-                i++;
-            }
             string temp = "";
             // handling single-quote message
             if(input[i] == '\''){
@@ -82,6 +78,10 @@ int main() {
             else{
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
+              }
+            // Skip leading spaces incase of previous message is without single quote
+              while (i < input.length() && input[i] == ' ') {
+                i++;
               }
               cout << temp << " ";
             }
