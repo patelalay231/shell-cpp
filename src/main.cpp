@@ -92,7 +92,7 @@ int main() {
             try{
               path = filesystem::current_path().string() + '/' + path; 
               string cwd = filesystem::canonical(path);
-              cout << cwd << endl;
+              filesystem::current_path(cwd);
             }catch(const filesystem::filesystem_error& e){
               cout << "cd: " << path << ": No such file or directory\n";
             }
