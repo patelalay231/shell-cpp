@@ -84,17 +84,17 @@ int main() {
             try{
               filesystem::current_path(path);
             }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": No such file or directory" << endl;
+              cout << "cd: " << path << ": No such file or directory\n";
             }
           }
           // Navigating in relative path ./, ../, ./dir
           else if(path[0] == '.'){
             try{
-              string cwd = filesystem::current_path().string();
-              string dir = cwd + '/' + path;
-              cwd = filesystem::canonical(dir);
+              path = filesystem::current_path().string() + '/' + path; 
+              string cwd = filesystem::canonical(path);
+              cout << cwd << endl;
             }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": No such file or directory" << endl;
+              cout << "cd: " << path << ": No such file or directory\n";
             }
           }
         }
