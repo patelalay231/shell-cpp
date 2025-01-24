@@ -97,7 +97,7 @@ int main() {
                   } else {
                       std::cout << "cd: " << new_path << ": No such file or directory\n";
                   }
-              }catch(const fs::filesystem_error& e){
+              }catch(const filesystem::filesystem_error& e){
                   std::cout << "cd: " << path << ": No such file or directory\n";
               }
           }
