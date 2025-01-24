@@ -22,14 +22,6 @@ string isExist(string command){
     return "";  
 }
 
-bool endsWithExtension(const string& filePath, const string extension) {
-    if (extension.length() > filePath.length()) {
-        return false;
-    }
-    
-    return filePath.compare(filePath.length() - extension.length(), extension.length(), extension) == 0;
-}
-
 int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
   cout << unitbuf;
@@ -72,13 +64,12 @@ int main(int argc, char* argv[]) {
     else{
       string get_command_path = isExist(command);
       if(!get_command_path.empty()){
-          string exe_file_path = get_command_path + ' '+ input;
+          string exe_file_path = command + ' '+ input;
           system(exe_file_path.c_str());
       }
       else{
-        cout << command <<": not found\n";
+        cout << input <<": command not found\n";
       }
-      // cout << input <<": command not found\n";
     }
   }
 }
