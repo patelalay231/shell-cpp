@@ -58,30 +58,45 @@ int main() {
         }
         // Handle the "echo" command 
         else if (command == "echo") {
-          string result = "";
-          int i = 0;
+    string result = "";
+    int i = 0;
 
-          while (i < input.length()){
-            string result = "";
-            // handling single-quote message
-            if(input[i] == '\''){
-              while(i < input.length() && input[i] != '\''){
-                result += input[i];
-                i++;
-              }
-            }
-            //handling without single-quote message
-            else{
-              while(i < input.length() && input[i] != ' ' && input[i] != '\''){
-                result += input[i];
-                i++;
-              }
-            }
+    while (i < input.length()) {
+        // Skip leading spaces
+        while (i < input.length() && input[i] == ' ') {
             i++;
-            cout << result;
-          }
-            cout << endl;
         }
+
+        string temp = ""; // Temporary string to hold the current word or quoted section
+
+        // Handling single-quoted strings
+        if (i < input.length() && input[i] == '\'') {
+            i++; // Skip the opening quote
+            while (i < input.length() && input[i] != '\'') {
+                temp += input[i++];
+            }
+            if (i < input.length() && input[i] == '\'') {
+                i++; // Skip the closing quote
+            }
+        } else {
+            // Handling unquoted words
+            while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
+                temp += input[i++];
+            }
+        }
+
+        // Add temp to the result with appropriate spacing
+        if (!temp.empty()) {
+            if (!result.empty()) {
+                result += " "; // Add a single space before appending temp
+            }
+            result += temp;
+        }
+    }
+
+    cout << result << endl;
+}
+
 
         // Handle the "type" command
         else if (command == "type") {
