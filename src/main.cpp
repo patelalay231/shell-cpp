@@ -64,7 +64,7 @@ int main() {
               while(i <= msg.length()){
                 while(msg[i] == ' ') i++;
                 string result = "";
-                while(msg[i] != ' ') result += msg[i++];
+                while(i <= msg.length() && msg[i] != ' ' &&) result += msg[i++];
                 cout << result << " ";
               }
               cout << endl;
