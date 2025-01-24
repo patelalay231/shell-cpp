@@ -58,16 +58,34 @@ int main() {
         }
         // Handle the "echo" command 
         else if (command == "echo") {
-            if(input.front() == '\'') input = input.substr(1,input.length()-2);
-            int i=0;
-            while(i < input.length()){
-              while(i < input.length() && (input[i] == ' ' || input[i] == '\'')) i++;
-              string result = "";
-              while(i < input.length() && input[i] != ' ' && input[i] != '\'') result += input[i++];
-              cout << result << " ";
+          string result = "";
+          int i = 0;
+
+          while (i < input.length()) {
+              // Skip leading spaces
+              while (i < input.length() && input[i] == ' ') {
+                  result += input[i++];
+              }
+
+              // Handle quoted strings
+              if (i < input.length() && input[i] == '\'') {
+                  i++; // Skip the opening quote
+                  while (i < input.length() && input[i] != '\'') {
+                      result += input[i++];
+                  }
+                  if (i < input.length() && input[i] == '\'') {
+                      i++; // Skip the closing quote
+                  }
+              } else {
+                  // Handle non-quoted characters
+                  while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
+                      result += input[i++];
+                  }
+              }
             }
-            cout << endl;
+            cout << result << endl;
         }
+
         // Handle the "type" command
         else if (command == "type") {
             if (shell_builtins[input]) {
