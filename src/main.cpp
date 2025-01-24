@@ -77,9 +77,9 @@ int main() {
                       i++; // Skip the closing quote
                   }
               } else {
-                  // Handle non-quoted characters
                   while (i < input.length() && input[i] != ' ' && input[i] != '\'') {
                       result += input[i++];
+                      while (i < input.length() && input[i] != ' ') i++;
                   }
               }
             }
