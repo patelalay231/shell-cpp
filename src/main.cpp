@@ -32,25 +32,6 @@ bool endsWithExtension(const string& filePath, const string extension) {
     
     return filePath.compare(filePath.length() - extension.length(), extension.length(), extension) == 0;
 }
-// void isExist(const char* command) {
-//     char* pathEnv = getenv("PATH");
-//     if (!pathEnv) return;
-
-//     string path(pathEnv);
-//     stringstream ss(path);
-//     string directory;
-
-//     while (getline(ss, directory, ':')) {
-//         string fullPath = directory + "/" + command;
-//         struct stat sb;
-//         if (stat(fullPath.c_str(), &sb) == 0){
-//             cout << command << " is " << fullPath << endl;
-//             return;
-//         }
-//       }
-    
-//     cout << command <<": not found\n";
-// }
 
 int main(int argc, char* argv[]) {
   // Flush after every std::cout / std:cerr
@@ -83,7 +64,7 @@ int main(int argc, char* argv[]) {
       }
       else{
         string get_command_path = isExist(input);
-        if(get_command_path){
+        if(!get_command_path.empty()){
           cout << input << " is " << get_command_path << endl;
         }
         else{
