@@ -91,9 +91,8 @@ int main() {
           else if(path[0] == '.'){
             try{
               path = filesystem::current_path().string() + '/' + path; 
-              filesystem::path final_path = path;
               cout << path << endl;
-              filesystem::canonical(&final_path);
+              string cwd = filesystem::canonical(path);
             }catch(const filesystem::filesystem_error& e){
               cout << "cd: " << path << ": No such file or directory\n";
             }
