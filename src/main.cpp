@@ -73,13 +73,7 @@ int main(int argc, char* argv[]) {
       string get_command_path = isExist(command);
       if(!get_command_path.empty()){
           string exe_file_path = get_command_path + ' '+ input;
-          int result = system(exe_file_path.c_str());
-
-          if (result == 0) {
-              printf("Program executed successfully.\n");
-          } else {
-              printf("Error occurred while executing the program.\n");
-          }
+          system(exe_file_path.c_str());
       }
       else{
         cout << command <<": not found\n";
