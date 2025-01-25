@@ -181,11 +181,11 @@ int main() {
               command = input.substr(i, input.length() - 1);
             }
             if(executable.size() > 0){
-                string full_command = executable + ' ' + command;
-                system("exe  with  space /tmp/qux/f1");
+                string full_command = command;
+                system(full_command.c_str());
             }
             else{
-              string command_path = getFilePath("exe  with  space /tmp/qux/f1");
+              string command_path = getFilePath(command);
               if (!command_path.empty()) {
                   // Execute the command with arguments
                   string full_command = command + ' ' + input;
