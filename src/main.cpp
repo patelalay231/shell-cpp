@@ -180,14 +180,19 @@ int main() {
               i++; // Skip the closing single quote
               command = input.substr(i, input.length() - 1);
             }
-            string command_path = getFilePath(command);
-            cout << command_path << endl;
-            if (!command_path.empty()) {
-                // Execute the command with arguments
+            if(executable.size() > 0){
                 string full_command = executable + ' ' + command + ' ' + input;
                 system(full_command.c_str());
-            } else {
-                cout << command << ": not found\n";
+            }
+            else{
+              string command_path = getFilePath(command);
+              if (!command_path.empty()) {
+                  // Execute the command with arguments
+                  string full_command = command + ' ' + input;
+                  system(full_command.c_str());
+              } else {
+                  cout << command << ": not found\n";
+              }
             }
         }
     }
