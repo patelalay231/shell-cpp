@@ -75,7 +75,7 @@ int main() {
               cout << temp;
             }
             // hadling double quote message
-            else if(input.front() == '\"'){
+            else if(input[i] == '\"'){
               i++;
               while(i<input.length() && input[i] != '\"'){
                 temp += input[i++];
