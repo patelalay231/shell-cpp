@@ -161,23 +161,27 @@ int main() {
         else {
             int  i = 0;
             if (input[i] == '\"') {
+              command = "";
               i++; // Skip the opening double quote
               while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
+                  command += input[i];
                   i++;
               }
               i++; // Skip the closing double quote
-              command = input.substr(i, input.length() - 1);
+              command = command + " " + input.substr(i, input.length() - 1);
             }
             else if (input[i] == '\'') {
+              command = "";
               i++; // Skip the opening single quote
               while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
+                  command += input[i];
                   i++;
               }
               i++; // Skip the closing single quote
-              command = input.substr(i, input.length() - 1);
+              command = command + " " + input.substr(i, input.length() - 1);
             }
-
-            string command_path = getFilePath("exe  with  space tmp/bar/f1");
+            cout << command << endl;
+            string command_path = getFilePath(command);
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
