@@ -96,7 +96,7 @@ void handleEcho(const string &input)
         {
             result += token.substr(1, token.size() - 2);
         }
-        // Handle file redirection (1> or 2>)
+        // Handle file redirection (1> or 2> or 1>> or 2>>)
         else if (token == "1>" || token == ">")
         {
             fileName = tokens[++i];
