@@ -22,6 +22,40 @@ vector<string> tokenize(const string& input) {
     return tokens;
 }
 
+// Tokenization function for executable commands with quotes
+vector<string> tokenizeExecutable(const string& input) {
+    vector<string> tokens;
+    bool in_single_quote = false;
+    bool in_double_quote = false;
+    string current_token;
+
+    for (char c : input) {
+        if (c == '\'' && !in_double_quote) {
+            in_single_quote = !in_single_quote;
+            current_token += c;
+        }
+        else if (c == '"' && !in_single_quote) {
+            in_double_quote = !in_double_quote;
+            current_token += c;
+        }
+        else if (c == ' ' && !in_single_quote && !in_double_quote) {
+            if (!current_token.empty()) {
+                tokens.push_back(current_token);
+                current_token.clear();
+            }
+        }
+        else {
+            current_token += c;
+        }
+    }
+
+    if (!current_token.empty()) {
+        tokens.push_back(current_token);
+    }
+
+    return tokens;
+}
+
 // Map for built-in shell commands
 map<string, int> shell_builtins = {
     {"echo", 1},
@@ -65,7 +99,32 @@ void handleEcho(const vector<string>& tokens) {
         output.pop_back();
     }
     
-    cout << output << endl;
+    // Handling quotes and escaping
+    string final_output;
+    size_t i = 0;
+    while (i < output.length()) {
+        if (output[i] == '\'' || output[i] == '"') {
+            char quote = output[i++];
+            string temp;
+            while (i < output.length() && output[i] != quote) {
+                if (output[i] == '\\' && i+1 < output.length() && (output[i+1] == quote || output[i+1] == '\\')) {
+                    temp += output[i+1];
+                    i += 2;
+                } else {
+                    temp += output[i++];
+                }
+            }
+            final_output += temp;
+            if (i < output.length()) i++; // skip closing quote
+        } else if (output[i] == '\\' && i+1 < output.length()) {
+            final_output += output[i+1];
+            i += 2;
+        } else {
+            final_output += output[i++];
+        }
+    }
+    
+    cout << final_output << endl;
 }
 
 // Function to handle type command with tokenization
@@ -134,6 +193,14 @@ int main() {
             cout << filesystem::current_path().string() << endl;
         } else if (command == "cd") {
             handleCd(tokens);
+        } else if (command == "'exe" || command == "\"exe") {
+            // Executable block handling with quote-aware tokenization
+            vector<string> exe_tokens = tokenizeExecutable(input);
+            if (exe_tokens.size() > 1) {
+                // Skip the first token ('exe or "exe)
+                string full_command = exe_tokens[1];
+                system(full_command.c_str());
+            }
         } else {
             string command_path = getFilePath(command);
             if (!command_path.empty()) {
