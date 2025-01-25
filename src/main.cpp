@@ -70,11 +70,22 @@ int main() {
                 temp += input[i++];
               }
               if (i < input.length() && input[i] == '\'') {
-                i++; // Skip the closing quote
+                i++; // Skip the closing single quote
               }
               cout << temp;
             }
-            //handling without single-quote message
+            // hadling double quote message
+            else if(input.front() == '\"'){
+              i++;
+              while(i<input.length() && input[i] != '\"'){
+                temp += input[i++];
+              }
+              if(i < input.length() && input[i] == '\"'){
+                i++; // Skip the last cloing double quote
+              }
+              cout << temp << " ";
+            }
+            // handling without single-quote message
             else{
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
