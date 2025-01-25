@@ -164,12 +164,12 @@ int main() {
             if(input[i] == '\''){
               i++;
               while(input[i] != '\'') i++;
-              command_path = input.substr(1,i);
+              command_path = input.substr(0,i+1);
             }
             else if(input[i] == '\"'){
               i++;
               while(input[i] != '\"') i++;
-              command_path = input.substr(1,i);
+              command_path = input.substr(0,i+1);
             }
             command_path = getFilePath(command_path);
             if (!command_path.empty()) {
