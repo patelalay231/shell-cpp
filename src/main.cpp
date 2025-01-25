@@ -90,10 +90,12 @@ int main() {
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
               }
-              // Skip leading spaces incase of previous message is without single quote
-              while (i < input.length() && input[i] == ' ') {
-                i++;
+              // Add the space if it is with backslash
+              while (i+1 < input.length() && input[i] == '\\' && input[i+1] == ' ') {
+                temp += ' ';
+                i+=2;
               }
+
               cout << temp << " ";
             }
           }
