@@ -162,12 +162,14 @@ int main() {
           int i = 0;
           if(input[i] == '\"'){
             i++;
-            while(input[i] != '\"' || input[i] == ' ') i++;
+            while (i < input.length() && input[i] != '\"') i++;
+            i++; // Move past the closing quote
             command = input.substr(i,input.length()-1);
           }
           else if(input[i] == '\''){
             i++;
-            while(input[i] != '\'' || input[i] == ' ') i++;
+             while (i < input.length() && input[i] != '\'') i++;
+            i++; // Move past the closing quote
             command = input.substr(i,input.length()-1);
           }
           cout << command << endl;
