@@ -114,7 +114,6 @@ int main() {
           }
             cout << endl;
         }
-
         // Handle the "type" command
         else if (command == "type") {
             if (shell_builtins[input]) {
@@ -132,6 +131,7 @@ int main() {
         else if(command == "pwd"){
           cout << filesystem::current_path().string() << endl;
         }
+        // Handle the "cd" command
         else if(command == "cd"){
           string path = input;
           // Navigating in absoulute path
@@ -159,7 +159,19 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-            string command_path = getFilePath(command);
+            int i = 0;
+            string command_path = input;
+            if(input[i] == '\''){
+              i++;
+              while(input[i] != '\'') i++;
+              command_path = command_path.substr(1,i);
+            }
+            else if(input[i] == '\"'){
+              i++;
+              while(input[i] != '\"') i++;
+              command_path = command_path.substr(1,i);
+            }
+            command_path = getFilePath(command_path);
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
