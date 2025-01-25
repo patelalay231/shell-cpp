@@ -67,7 +67,13 @@ int main() {
             if(input[i] == '\''){
               i++;
               while(i < input.length() && input[i] != '\''){
-                temp += input[i++];
+                if(i+1 < input.length() && input[i] == '\\'){
+                  temp += input[i+1];
+                  i+=2;
+                }
+                else{
+                  temp += input[i++];
+                }
               }
               if (i < input.length() && input[i] == '\'') {
                 i++; // Skip the closing single quote
@@ -78,7 +84,13 @@ int main() {
             else if(input[i] == '\"'){
               i++;
               while(i<input.length() && input[i] != '\"'){
-                temp += input[i++];
+                if(i+1 < input.length() && input[i] == '\\'){
+                  temp += input[i+1];
+                  i+=2;
+                }
+                else{
+                  temp += input[i++];
+                }
               }
               if(i < input.length() && input[i] == '\"'){
                 i++; // Skip the last cloing double quote
