@@ -83,6 +83,10 @@ int main() {
               if(i < input.length() && input[i] == '\"'){
                 i++; // Skip the last cloing double quote
               }
+              // Skip leading spaces incase of previous message is without single quote
+              while (i < input.length() && input[i] == ' ') {
+                i++;
+              }
               cout << temp;
             }
             // handling without single-quote message
