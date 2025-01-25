@@ -48,6 +48,23 @@ int main() {
         string input;
         getline(cin, input);  // Get the user input
 
+        // Removing single and double quote message if it's in start
+        int i = 0;
+        if (input[i] == '\"') {
+            i++; // Skip the opening double quote
+            while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
+                i++;
+            }
+            i++; // Skip the closing double quote
+        }
+        else if (input[i] == '\'') {
+            i++; // Skip the opening single quote
+            while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
+                i++;
+            }
+            i++; // Skip the closing single quote
+        }
+
         // Extract the command and arguments
         string command = input.substr(0, input.find(" "));
         input.erase(0, input.find(" ") + 1);
@@ -159,7 +176,7 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-          string command_path = getFilePath("/tmp/qux/f1");
+          string command_path = getFilePath(command);
           if (!command_path.empty()) {
               // Execute the command with arguments
               string full_command = command + ' ' + input;
