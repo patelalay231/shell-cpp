@@ -94,8 +94,17 @@ void handleEcho(const string &input)
         }
         // Handling file dumping error
         else if (input[i] == '2' && i + 1 < input.length() && input[i + 1] == '>')
-        {
-            cerr << "hello" << endl;
+        {   
+            fileName = input.substr(i + 3, input.length() - 1);
+            ofstream outputFile(fileName);
+            if (outputFile.is_open())
+            {
+                outputFile << result << endl;
+                outputFile.close();
+            }
+            else{
+                cerr << "hello" << endl;
+            }
             return;
         }
         // handling without single-quote message
