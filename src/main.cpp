@@ -182,6 +182,7 @@ int main() {
             }
             if(executable.size() > 0){
                 string full_command = executable + ' ' + command + ' ' + input;
+                cout << full_command << endl;
                 system(full_command.c_str());
             }
             else{
