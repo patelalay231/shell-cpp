@@ -158,18 +158,17 @@ int main() {
           }
         }
         // For other commands, try to find their path and execute them
+        else if(input[0] == '\'' || input[0] == '\"'){
+          cout << "HELLO" << endl;
+        }
         else{
-          string str = "\'exe  with  space\' /tmp/quz/f1";
-          cout << str << endl;
-          system(str.c_str());
+          // string str = "\'exe  with  space\' /tmp/quz/f1";
           string command_path = getFilePath(command);
-          // if (!command_path.empty()) {
-          //     string str = "\'exe  with  space\' " + command_path;
-          //     cout << str << endl;
-          //     system(str.c_str());
-          // } else {
-          //     cout << command << ": not found\n";
-          // }
+          if (!command_path.empty()) {
+              system(input.c_str());
+          } else {
+              cout << command << ": not found\n";
+          } 
         }
     }
 }
