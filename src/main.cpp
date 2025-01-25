@@ -157,11 +157,11 @@ int main() {
             filesystem::current_path(home_dir_path);
           }
         }
-        // Handl executable
+        // Handle executable
         else if(input[0] == '\'' || input[0] == '\"'){
           system(input.c_str());
         }
-        // For other commands, try to find their path and execute them
+        // For other commands, try to find their path and execute them.s
         else{
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
