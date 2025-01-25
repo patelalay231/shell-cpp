@@ -159,43 +159,24 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-            string executable = "";
-            string command = "";
-            size_t i = 0;
-
-            // Handle quoted executable
-            if (input[i] == '"' || input[i] == '\'') {
-                char quote = input[i];
-                i++; // Skip opening quote
-                
-                // Extract executable name
-                while (i < input.length() && input[i] != quote) {
-                    executable += input[i];
-                    i++;
-                }
-                i++; // Skip closing quote
-                
-                // Skip any whitespace
-                while (i < input.length() && isspace(input[i])) {
-                    i++;
-                }
-                
-                // Extract command arguments
-                command = input.substr(i);
-            }
-
-            // Execute the command
-            if (!executable.empty()) {
-                string full_command = executable + ' ' + command;
-                system(full_command.c_str());
-            } else {
-                string command_path = getFilePath(command);
-                if (!command_path.empty()) {
-                    system(input.c_str());
-                } else {
-                    cout << command << ": not found\n";
-                }
-            }
-        }
+    size_t space_pos = input.find(' ');
+    string executable, args;
+    
+    if (space_pos != string::npos) {
+        // Command with arguments
+        executable = input.substr(0, space_pos);
+        args = input.substr(space_pos + 1);
+    } else {
+        // Command without arguments
+        executable = input;
+    }
+    
+    string command_path = getFilePath(executable);
+    if (!command_path.empty()) {
+        system(input.c_str());
+    } else {
+        cout << executable << ": not found\n";
+    }
+}
     }
 }
