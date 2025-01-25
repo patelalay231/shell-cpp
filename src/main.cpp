@@ -95,7 +95,7 @@ void handleEcho(const string &input)
         // Handling file dumping error
         else if (input[i] == '2' && i + 1 < input.length() && input[i + 1] == '>')
         {
-            cerr << result << endl;
+            cerr << "hello" << endl;
             return;
         }
         // handling without single-quote message
