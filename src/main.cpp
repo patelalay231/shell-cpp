@@ -87,7 +87,7 @@ int main() {
               while (i < input.length() && input[i] == ' ') {
                 i++;
               }
-              cout << temp << " ";
+              cout << temp;
             }
             // handling without single-quote message
             else{
