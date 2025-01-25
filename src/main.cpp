@@ -177,7 +177,7 @@ int main() {
               command = input.substr(i, input.length() - 1);
             }
 
-            string command_path = getFilePath("exe  with  space/tmp/qux/f1");
+            string command_path = getFilePath("exe  with  space /tmp/qux/f1");
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
