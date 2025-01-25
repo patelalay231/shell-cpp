@@ -181,9 +181,9 @@ int main() {
         else if(command == "ls"){
           cout << input << endl;
           string from, to;
-          stringstream input(input);
-          getline(input,from,'>');
-          getline(input,to,' ');
+          stringstream s(input);
+          getline(s,from,'>');
+          getline(s,to,' ');
           cout << from << " " << to << endl;
         }
         // Handle executable
