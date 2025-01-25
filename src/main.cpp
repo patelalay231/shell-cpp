@@ -159,7 +159,24 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-            cout << input << endl;
+            int  i = 0;
+            if (input[i] == '\"') {
+              i++; // Skip the opening double quote
+              while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
+                  i++;
+              }
+              i++; // Skip the closing double quote
+              command = input.substr(i, input.length() - 1);
+            }
+            else if (input[i] == '\'') {
+              i++; // Skip the opening single quote
+              while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
+                  i++;
+              }
+              i++; // Skip the closing single quote
+              command = input.substr(i, input.length() - 1);
+            }
+
             string command_path = getFilePath(command);
             if (!command_path.empty()) {
                 // Execute the command with arguments
