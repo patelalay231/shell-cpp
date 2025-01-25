@@ -161,6 +161,9 @@ int main() {
         else if(input[0] == '\'' || input[0] == '\"'){
           system(input.c_str());
         }
+        else if(command == "cat"){
+          cout << "hello";
+        }
         // For other commands, try to find their path and execute them
         else{
           input.erase(0, input.find(" ") + 1);
