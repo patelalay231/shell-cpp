@@ -103,6 +103,11 @@ int main() {
                 toFile = true;
                 break;
             }
+            // Handling file dumping error
+            else if(input[i] == '2' && i+1 < input.length() && input[i+1] == '>'){
+                fileName = input.substr(i+3,input.length()-1);
+                break;
+            }
             // handling without single-quote message
             else{
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
