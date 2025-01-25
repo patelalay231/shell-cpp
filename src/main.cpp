@@ -102,9 +102,6 @@ void handleEcho(const string &input)
                 cerr << result << endl;
                 outputFile.close();
             }
-            else{
-                cerr << "hello" << endl;
-            }
             return;
         }
         // handling without single-quote message
