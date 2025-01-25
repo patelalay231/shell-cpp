@@ -88,10 +88,14 @@ int main() {
             // handling without single-quote message
             else{
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
-                temp += input[i++];
-                if(i < input.length() && input[i-1] == '\\'){
+                if(i+1 < input.length() && input[i] == '\\'){
+                  temp += input[i+1];
+                  i+=2;
+                }
+                else{
                   temp += input[i++];
                 }
+                
               }
 
               cout << temp << " ";
