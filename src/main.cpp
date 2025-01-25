@@ -67,7 +67,7 @@ int main() {
 
         // Extract the command and arguments
         string command = input.substr(i, input.find(" "));
-        input.erase(0, input.find(" ") + 1);
+        input.erase(i, input.find(" ") + 1);
 
         // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
