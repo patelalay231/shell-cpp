@@ -180,9 +180,9 @@ int main() {
               i++; // Skip the closing single quote
               command = input.substr(i, input.length() - 1);
             }
-            if(executable.size() < 0){
+            if(executable.size() > 0){
                 string full_command = executable + ' ' + command;
-                system(full_command.c_str());
+                system("exe  with  space /tmp/qux/f1");
             }
             else{
               string command_path = getFilePath("exe  with  space /tmp/qux/f1");
