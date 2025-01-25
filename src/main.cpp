@@ -48,28 +48,10 @@ int main() {
         string input;
         getline(cin, input);  // Get the user input
 
-        // Removing single and double quote message if it's in start
-        int i = 0;
-        if (input[i] == '\"') {
-            i++; // Skip the opening double quote
-            while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
-                i++;
-            }
-            i++; // Skip the closing double quote
-        }
-        else if (input[i] == '\'') {
-            i++; // Skip the opening single quote
-            while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
-                i++;
-            }
-            i++; // Skip the closing single quote
-        }
-        // Skip whitspaces
-        while(input[i] == ' ') i++;
         // Extract the command and arguments
-        string command = input.substr(i, input.find(" "));
-        input.erase(i, input.find(" ") + 1);
-        cout << command;
+        string command = input.substr(0, input.find(" "));
+        input.erase(0, input.find(" ") + 1);
+
         // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
             return 0;
@@ -177,14 +159,15 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-          string command_path = getFilePath(command);
-          if (!command_path.empty()) {
-              // Execute the command with arguments
-              string full_command = command + ' ' + input;
-              system(full_command.c_str());
-          } else {
-              cout << command << ": not found\n";
-          }
+            cout << input << endl;
+            string command_path = getFilePath(command);
+            if (!command_path.empty()) {
+                // Execute the command with arguments
+                string full_command = command + ' ' + input;
+                system(full_command.c_str());
+            } else {
+                cout << command << ": not found\n";
+            }
         }
     }
 }
