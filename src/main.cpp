@@ -50,7 +50,7 @@ int main() {
 
         // Extract the command and arguments
         string command = input.substr(0, input.find(" "));
-        if(input[0] != '\'' && input[0] != '\"')input.erase(0, input.find(" ") + 1);
+        input.erase(0, input.find(" ") + 1);
 
         // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
@@ -158,48 +158,13 @@ int main() {
           }
         }
         // For other commands, try to find their path and execute them
-        else {
-            size_t i = 0;
-string executable = "";
-string command = "";
-
-// Check for quoted executable (single or double quotes)
-if (input[i] == '"' || input[i] == '\'') {
-    char quote_type = input[i];
-    i++; // Skip opening quote
-    
-    // Extract executable name (stop at matching quote)
-    while (i < input.length() && input[i] != quote_type) {
-        executable += input[i];
-        i++;
-    }
-    i++; // Skip closing quote
-    
-    // Skip whitespace
-    while (i < input.length() && isspace(input[i])) {
-        i++;
-    }
-    
-    // Remaining input is the command
-    command = input.substr(i);
-} 
-else {
-    // Regular command parsing
-    size_t space_pos = input.find(' ');
-    if (space_pos != string::npos) {
-        executable = input.substr(0, space_pos);
-        command = input.substr(space_pos + 1);
-    } 
-    else {
-        executable = input;
-    }
-}
-
-// Execute command
-if (!executable.empty()) {
-    string full_command = executable + (!command.empty() ? " " + command : "");
-    system(full_command.c_str());
-}
+        else{
+          string command_path = getFilePath(command);
+          if (!command_path.empty()) {
+              system(input.c_str());
+          } else {
+              cout << command << ": not found\n";
+          }
         }
     }
 }
