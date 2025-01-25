@@ -157,19 +157,13 @@ int main() {
             filesystem::current_path(home_dir_path);
           }
         }
-        // For other commands, try to find their path and execute them
+        // Handl executable
         else if(input[0] == '\'' || input[0] == '\"'){
           system(input.c_str());
         }
+        // For other commands, try to find their path and execute them
         else{
-          string command_path = getFilePath(command);
-            if (!command_path.empty()) {
-                // Execute the command with arguments
-                string full_command = command + ' ' + input;
-                system(full_command.c_str());
-            } else {
-                cout << command << ": not found\n";
-            }
+          cout << input << endl;
         }
     }
 }
