@@ -171,7 +171,7 @@ int main() {
               while(input[i] != '\"') i++;
               command_path = command_path.substr(1,i);
             }
-            command_path = getFilePath(command_path);
+            command_path = getFilePath(command_path.c_str());
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
