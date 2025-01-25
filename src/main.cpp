@@ -181,7 +181,7 @@ int main() {
         else if(command == "ls"){
           cout << input << endl;
           // string from, to;
-          // getline(input,from,">");
+          // getline(input,from,'>');
         }
         // Handle executable
         else if(command == "\'exe" || command == "\"exe"){
