@@ -181,7 +181,7 @@ int main() {
               command = input.substr(i, input.length() - 1);
             }
             if(executable.size() > 0){
-                string full_command = command;
+                string full_command = executable + command;
                 system(full_command.c_str());
             }
             else{
