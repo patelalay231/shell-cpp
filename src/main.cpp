@@ -83,7 +83,7 @@ int main() {
               if(i < input.length() && input[i] == '\"'){
                 i++; // Skip the last cloing double quote
               }
-              cout << temp << " ";
+              cout << temp;
             }
             // handling without single-quote message
             else{
