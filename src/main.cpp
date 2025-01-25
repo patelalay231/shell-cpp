@@ -6,8 +6,50 @@
 #include <sys/stat.h>
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 using namespace std;
+
+// Function to split input into tokens
+vector<string> tokenize(string input)
+{
+    const char kSingleQuote = '\'';
+    const char kDoubleQuote = '"';
+    bool inSingleQuotes = false;
+    bool inDoubleQuotes = false;
+    bool escapeLiteral = false;
+    vector<string> tokens;
+    string nextToken = "";
+    input.push_back(' '); // we do this so our for loop properly pushs back the last token to the token list
+    for (auto c : input)
+    {
+        if (c == kSingleQuote && !escapeLiteral && !inDoubleQuotes)
+        {
+            inSingleQuotes = !inSingleQuotes;
+        }
+        else if (c == kDoubleQuote && !escapeLiteral && !inSingleQuotes)
+        {
+            inDoubleQuotes = !inDoubleQuotes;
+        }
+        else if (c == '\\' && !escapeLiteral && !inSingleQuotes)
+        {
+            escapeLiteral = true;
+        }
+        else if (c == ' ' && !escapeLiteral && !inSingleQuotes && !inDoubleQuotes)
+        {
+            if (nextToken != "") // skip on spaces
+                tokens.push_back(nextToken);
+            nextToken = "";
+        }
+        else
+        {
+            nextToken.push_back(c);
+            if (escapeLiteral)
+                escapeLiteral = false;
+        }
+    }
+    return tokens;
+}
 
 // Function to get relative path if a command exists in the system PATH
 string getFilePath(const string &command)
@@ -34,56 +76,30 @@ string getFilePath(const string &command)
 // Function to handle echo command
 void handleEcho(const string &input)
 {
-    string result = "";
-    int i = 0;
+    vector<string> tokens = tokenize(input);
+    string result;
     string fileName;
-    while (i < input.length())
+    bool redirectToFile = false;
+    bool redirectToError = false;
+
+    for (size_t i = 0; i < tokens.size(); i++)
     {
-        string temp = "";
-        // handling single-quote message
-        if (input[i] == '\'')
+        string token = tokens[i];
+
+        // Handle single-quoted strings
+        if (token.front() == '\'' && token.back() == '\'')
         {
-            i++;
-            while (i < input.length())
-            {
-                temp += input[i++];
-                if (i > 0 && input[i] == '\'' && input[i - 1] != '\\')
-                {
-                    break;
-                }
-            }
-            if (i < input.length() && input[i] == '\'')
-            {
-                i++; // Skip the closing single quote
-            }
-            result += temp;
+            result += token.substr(1, token.size() - 2);
         }
-        // hadling double quote message
-        else if (input[i] == '\"')
+        // Handle double-quoted strings
+        else if (token.front() == '"' && token.back() == '"')
         {
-            i++;
-            while (i < input.length() && input[i] != '\"')
-            {
-                if (i + 1 < input.length() && input[i] == '\\')
-                {
-                    temp += input[i + 1];
-                    i += 2;
-                }
-                else
-                {
-                    temp += input[i++];
-                }
-            }
-            if (i < input.length() && input[i] == '\"')
-            {
-                i++; // Skip the last cloing double quote
-            }
-            result += temp;
+            result += token.substr(1, token.size() - 2);
         }
-        // Handling file dump
-        else if (input[i] == '1' && i + 1 < input.length() && input[i + 1] == '>')
+        // Handle file redirection (1> or 2>)
+        else if (token == "1>" || token == ">")
         {
-            fileName = input.substr(i + 3, input.length() - 1);
+            fileName = tokens[++i];
             ofstream outputFile(fileName);
             if (outputFile.is_open())
             {
@@ -92,10 +108,9 @@ void handleEcho(const string &input)
             }
             return;
         }
-        // Handling file dumping error
-        else if (input[i] == '2' && i + 1 < input.length() && input[i + 1] == '>')
-        {   
-            fileName = input.substr(i + 3, input.length() - 1);
+        else if (token == "2>")
+        {
+            fileName = tokens[++i];
             ofstream outputFile(fileName);
             if (outputFile.is_open())
             {
@@ -104,28 +119,37 @@ void handleEcho(const string &input)
             }
             return;
         }
-        // handling without single-quote message
+        else if(token == "1>>")
+        {
+            fileName = tokens[++i];
+            ofstream outputFile(fileName,ios::app);
+            if (outputFile.is_open())
+            {
+                outputFile << result << endl;
+                outputFile.close();
+            }
+            return;
+        }
+        else if(token == "2>>")
+        {
+            fileName = tokens[++i];
+            ofstream outputFile(fileName,ios::app);
+            if (outputFile.is_open())
+            {
+                cerr << result << endl;
+                outputFile.close();
+            }
+            return;
+        }
         else
         {
-            while (i < input.length() && input[i] != ' ' && input[i] != '\'')
-            {
-                if (i + 1 < input.length() && input[i] == '\\')
-                {
-                    temp += input[i + 1];
-                    i += 2;
-                }
-                else
-                {
-                    temp += input[i++];
-                }
-            }
-            // Skipping the spaces
-            while (i < input.length() && input[i] == ' ')
-            {
-                i++;
-            }
-            result += temp + " ";
+            result += token + " ";
         }
+    }
+
+    if (!result.empty() && result.back() == ' ')
+    {
+        result.pop_back();
     }
     cout << result << endl;
 }
