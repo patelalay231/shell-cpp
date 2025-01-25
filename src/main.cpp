@@ -8,7 +8,7 @@
 
 using namespace std;
 
-// Function to check if a command exists in the system PATH
+// Function to get absolute path if a command exists in the system PATH
 string getFilePath(const string& command) {
     string path_env = getenv("PATH");
     stringstream ss(path_env);
@@ -162,15 +162,16 @@ int main() {
           system(input.c_str());
         }
         // For other commands, try to find their path and execute them
-        // else{
-        //   string command_path = getFilePath(command);
-        //   if (!command_path.empty()) {
-        //       // Execute the command with arguments
-        //       string full_command = command + ' ' + input;
-        //       system(full_command.c_str());
-        //   } else {
-        //       cout << command << ": not found\n";
-        //   }
-        // }
+        else{
+          input.erase(0, input.find(" ") + 1);
+          string command_path = getFilePath(command);
+          if (!command_path.empty()) {
+              // Execute the command with arguments
+              string full_command = command + ' ' + input;
+              system(full_command.c_str());
+          } else {
+              cout << command << ": not found\n";
+          }
+        }
     }
 }
