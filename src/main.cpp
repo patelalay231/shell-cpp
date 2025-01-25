@@ -1,220 +1,195 @@
 #include <iostream>
 #include <string>
-#include <vector>
 #include <map>
-#include <sstream>
-#include <filesystem>
 #include <cstdlib>
+#include <sstream>
 #include <sys/stat.h>
+#include <filesystem>
+#include <fstream>
 
 using namespace std;
-
-// Tokenization function
-vector<string> tokenize(const string& input) {
-    vector<string> tokens;
-    istringstream iss(input);
-    string token;
-    
-    while (iss >> token) {
-        tokens.push_back(token);
-    }
-    
-    return tokens;
-}
-
-// Tokenization function for executable commands with quotes
-vector<string> tokenizeExecutable(const string& input) {
-    vector<string> tokens;
-    bool in_single_quote = false;
-    bool in_double_quote = false;
-    string current_token;
-
-    for (char c : input) {
-        if (c == '\'' && !in_double_quote) {
-            in_single_quote = !in_single_quote;
-            current_token += c;
-        }
-        else if (c == '"' && !in_single_quote) {
-            in_double_quote = !in_double_quote;
-            current_token += c;
-        }
-        else if (c == ' ' && !in_single_quote && !in_double_quote) {
-            if (!current_token.empty()) {
-                tokens.push_back(current_token);
-                current_token.clear();
-            }
-        }
-        else {
-            current_token += c;
-        }
-    }
-
-    if (!current_token.empty()) {
-        tokens.push_back(current_token);
-    }
-
-    return tokens;
-}
-
-// Map for built-in shell commands
-map<string, int> shell_builtins = {
-    {"echo", 1},
-    {"exit", 1},
-    {"type", 1},
-    {"pwd", 1},
-    {"cd", 1},
-};
 
 // Function to get relative path if a command exists in the system PATH
 string getFilePath(const string& command) {
     string path_env = getenv("PATH");
-    istringstream ss(path_env);
+    stringstream ss(path_env);
     string path;
     
+    // Iterate through all directories in the PATH
     while (getline(ss, path, ':')) {
         string abs_path = path + "/" + command;
         struct stat sb;
         
+        // Check if the command exists in the current directory
         if (stat(abs_path.c_str(), &sb) == 0) {
-            return abs_path;
+            return abs_path;  // Return the absolute path if the command exists
         }
     }
-    return "";
-}
-
-// Function to handle echo command with tokenization
-void handleEcho(const vector<string>& tokens) {
-    if (tokens.size() <= 1) {
-        cout << endl;
-        return;
-    }
-    
-    string output;
-    for (size_t i = 1; i < tokens.size(); ++i) {
-        output += tokens[i] + " ";
-    }
-    
-    // Remove trailing space
-    if (!output.empty()) {
-        output.pop_back();
-    }
-    
-    // Handling quotes and escaping
-    string final_output;
-    size_t i = 0;
-    while (i < output.length()) {
-        if (output[i] == '\'' || output[i] == '"') {
-            char quote = output[i++];
-            string temp;
-            while (i < output.length() && output[i] != quote) {
-                if (output[i] == '\\' && i+1 < output.length() && (output[i+1] == quote || output[i+1] == '\\')) {
-                    temp += output[i+1];
-                    i += 2;
-                } else {
-                    temp += output[i++];
-                }
-            }
-            final_output += temp;
-            if (i < output.length()) i++; // skip closing quote
-        } else if (output[i] == '\\' && i+1 < output.length()) {
-            final_output += output[i+1];
-            i += 2;
-        } else {
-            final_output += output[i++];
-        }
-    }
-    
-    cout << final_output << endl;
-}
-
-// Function to handle type command with tokenization
-void handleType(const vector<string>& tokens) {
-    if (tokens.size() < 2) {
-        cout << "type: missing argument\n";
-        return;
-    }
-    
-    string command = tokens[1];
-    
-    if (shell_builtins.count(command)) {
-        cout << command << " is a shell builtin\n";
-    } else {
-        string command_path = getFilePath(command);
-        if (!command_path.empty()) {
-            cout << command << " is " << command_path << endl;
-        } else {
-            cout << command << ": not found\n";
-        }
-    }
-}
-
-// Function to handle cd command with tokenization
-void handleCd(const vector<string>& tokens) {
-    string path = (tokens.size() > 1) ? tokens[1] : getenv("HOME");
-    
-    try {
-        if (path[0] == '/') {
-            filesystem::current_path(path);
-        } else if (path[0] == '.') {
-            path = filesystem::current_path().string() + '/' + path;
-            string cwd = filesystem::canonical(path);
-            filesystem::current_path(cwd);
-        } else {
-            filesystem::current_path(path);
-        }
-    } catch (const filesystem::filesystem_error& e) {
-        cout << "cd: " << path << ": No such file or directory\n";
-    }
+    return "";  // Return empty string if command is not found
 }
 
 int main() {
+    // Ensure the output is flushed immediately after each statement
     cout << unitbuf;
     cerr << unitbuf;
 
+    // Map for built-in shell commands
+    map<string, int> shell_builtins = {
+        {"echo", 1},
+        {"exit", 1},
+        {"type", 1},
+        {"pwd", 1},
+        {"cd" , 1}
+    };
+
+    // Start a loop to simulate the shell
     while (true) {
-        cout << "$ ";
-        
+        cout << "$ ";  // Prompt the user for input
+
         string input;
-        getline(cin, input);
-        
-        vector<string> tokens = tokenize(input);
-        
-        if (tokens.empty()) continue;
-        
-        string command = tokens[0];
-        
+        getline(cin, input);  // Get the user input
+
+        // Extract the command and arguments
+        string command = input.substr(0, input.find(" "));
+        if(command != "\'exe" && command != "\"exe") input.erase(0, input.find(" ") + 1);
+        // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
-            break;
-        } else if (command == "echo") {
-            handleEcho(tokens);
-        } else if (command == "type") {
-            handleType(tokens);
-        } else if (command == "pwd") {
-            cout << filesystem::current_path().string() << endl;
-        } else if (command == "cd") {
-            handleCd(tokens);
-        } else if (command == "'exe" || command == "\"exe") {
-            // Executable block handling with quote-aware tokenization
-            vector<string> exe_tokens = tokenizeExecutable(input);
-            if (exe_tokens.size() > 1) {
-                // Skip the first token ('exe or "exe)
-                string full_command = exe_tokens[1];
-                system(full_command.c_str());
-            }
-        } else {
-            string command_path = getFilePath(command);
-            if (!command_path.empty()) {
-                // Reconstruct command with all tokens
-                string full_command;
-                for (const auto& token : tokens) {
-                    full_command += token + " ";
+            return 0;
+        }
+        // Handle the "echo" command 
+        else if (command == "echo") {
+          string result = "";
+          bool toStdOut = true;
+          bool toFile = false;
+          int i = 0;
+          string fileName;
+          while (i < input.length()){
+            string temp = "";
+            // handling single-quote message
+            if(input[i] == '\''){
+              i++;
+              while(i < input.length()){
+                temp += input[i++];
+                if(i > 0 && input[i] == '\'' && input[i-1] != '\\'){
+                  break;
                 }
-                system(full_command.c_str());
+              }
+              if (i < input.length() && input[i] == '\'') {
+                i++; // Skip the closing single quote
+              }
+              result += temp;
+            }
+            // hadling double quote message
+            else if(input[i] == '\"'){
+              i++;
+              while(i<input.length() && input[i] != '\"'){
+                if(i+1 < input.length() && input[i] == '\\'){
+                  temp += input[i+1];
+                  i+=2;
+                }
+                else{
+                  temp += input[i++];
+                }
+              }
+              if(i < input.length() && input[i] == '\"'){
+                i++; // Skip the last cloing double quote
+              }
+              result += temp;
+            }
+            // Handling file dump
+            else if(input[i] == '1' && i+1 < input.length() && input[i+1] == '>'){
+                fileName = input.substr(i+3,input.length()-1);
+                toStdOut = false;
+                toFile = true;
+                break;
+            }
+            // handling without single-quote message
+            else{
+              while(i < input.length() && input[i] != ' ' && input[i] != '\''){
+                if(i+1 < input.length() && input[i] == '\\'){
+                  temp += input[i+1];
+                  i+=2;
+                }
+                else{
+                  temp += input[i++];
+                }
+              }
+              // Skipping the spaces
+              while(i < input.length() && input[i] == ' '){
+                i++;
+              }
+              result += temp + " ";
+            }
+          }
+          if(toStdOut){
+            cout << result << endl;
+          }
+          else if(toFile){
+            ofstream outputFile(fileName);
+            if (outputFile.is_open()) {
+                outputFile << result << endl;
+                outputFile.close();
+            }
+          }
+        }
+        // Handle the "type" command
+        else if (command == "type") {
+            if (shell_builtins[input]) {
+                cout << input << " is a shell builtin\n";
             } else {
-                cout << command << ": not found\n";
+                string command_path = getFilePath(input);
+                if (!command_path.empty()) {
+                    cout << input << " is " << command_path << endl;
+                } else {
+                    cout << input << ": not found\n";
+                }
             }
         }
+        // Handle the "pwd" command
+        else if(command == "pwd"){
+          cout << filesystem::current_path().string() << endl;
+        }
+        // Handle the "cd" command
+        else if(command == "cd"){
+          string path = input;
+          
+          // Navigating in absoulute path
+          if(path[0] == '/'){
+            try{
+              filesystem::current_path(path);
+            }catch(const filesystem::filesystem_error& e){
+              cout << "cd: " << path << ": No such file or directory\n";
+            }
+          }
+          // Navigating in relative path ./, ../, ./dir
+          else if(path[0] == '.'){
+            try{
+              path = filesystem::current_path().string() + '/' + path; 
+              string cwd = filesystem::canonical(path);
+              filesystem::current_path(cwd);
+            }catch(const filesystem::filesystem_error& e){
+              cout << "cd: " << path << ": No such file or directory\n";
+            }
+          }
+          else{
+            string home_dir_path = getenv("HOME");
+            filesystem::current_path(home_dir_path);
+          }
+        }
+        // Handle executable
+        else if(command == "\'exe" || command == "\"exe"){
+          system(input.c_str());
+        }
+        // For other commands, try to find their path and execute them.s
+        else{
+          string command_path = getFilePath(command);
+          if (!command_path.empty()) {
+              // Execute the command with arguments
+              string full_command = command + ' ' + input;
+              system(full_command.c_str());
+          } else {
+              cout << command << ": not found\n";
+          }
+        }
     }
-    
-    return 0;
 }
