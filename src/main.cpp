@@ -160,18 +160,22 @@ int main() {
         // For other commands, try to find their path and execute them
         else {
           int i = 0;
-          if(input[i] == '\"'){
-            i++;
-            while (i < input.length() && input[i] != '\"') i++;
-            i++; // Move past the closing quote
-            command = input.substr(i,input.length()-i);
-          }
-          else if(input[i] == '\''){
-            i++;
-            while (i < input.length() && input[i] != '\'') i++;
-            i++; // Move past the closing quote
-            command = input.substr(i,input.length()-i);
-          }
+          if (input[i] == '\"') {
+    i++; // Skip the opening double quote
+    while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
+        i++;
+    }
+    i++; // Skip the closing double quote
+    command = input.substr(i, input.length() - i);
+}
+else if (input[i] == '\'') {
+    i++; // Skip the opening single quote
+    while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
+        i++;
+    }
+    i++; // Skip the closing single quote
+    command = input.substr(i, input.length() - i);
+}
           cout << command << endl;
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
