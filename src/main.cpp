@@ -159,14 +159,23 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-            string command_path = getFilePath(command);
-            if (!command_path.empty()) {
-                // Execute the command with arguments
-                string full_command = command + ' ' + input;
-                system(full_command.c_str());
-            } else {
-                cout << command << ": not found\n";
-            }
+          int i = 0;
+          if(input[i] == '\"'){
+            while(input[i] != '\"' || input[i] == ' ') i++;
+            command = input.substr(i,input.length()-1);
+          }
+          else if(input[i] == '\''){
+            while(input[i] != '\'' || input[i] == ' ') i++;
+            command = input.substr(i,input.length()-1);
+          }
+          string command_path = getFilePath(command);
+          if (!command_path.empty()) {
+              // Execute the command with arguments
+              string full_command = command + ' ' + input;
+              system(full_command.c_str());
+          } else {
+              cout << command << ": not found\n";
+          }
         }
     }
 }
