@@ -133,30 +133,30 @@ int main() {
         }
         // Handle the "cd" command
         else if(command == "cd"){
-          string path = input;
-          // Navigating in absoulute path
-          if(path[0] == '/'){
-            try{
-              filesystem::current_path(path);
-            }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": No such file or directory\n";
-            }
-          }
-          // Navigating in relative path ./, ../, ./dir
-          else if(path[0] == '.'){
-            try{
-              path = filesystem::current_path().string() + '/' + path; 
-              string cwd = filesystem::canonical(path);
-              filesystem::current_path(cwd);
-            }catch(const filesystem::filesystem_error& e){
-              cout << "cd: " << path << ": No such file or directory\n";
-            }
-          }
-          else{
-            string home_dir_path = getenv("HOME");
-            filesystem::current_path(home_dir_path);
-          }
-        }
+        //   string path = input;
+        //   // Navigating in absoulute path
+        //   if(path[0] == '/'){
+        //     try{
+        //       filesystem::current_path(path);
+        //     }catch(const filesystem::filesystem_error& e){
+        //       cout << "cd: " << path << ": No such file or directory\n";
+        //     }
+        //   }
+        //   // Navigating in relative path ./, ../, ./dir
+        //   else if(path[0] == '.'){
+        //     try{
+        //       path = filesystem::current_path().string() + '/' + path; 
+        //       string cwd = filesystem::canonical(path);
+        //       filesystem::current_path(cwd);
+        //     }catch(const filesystem::filesystem_error& e){
+        //       cout << "cd: " << path << ": No such file or directory\n";
+        //     }
+        //   }
+        //   else{
+        //     string home_dir_path = getenv("HOME");
+        //     filesystem::current_path(home_dir_path);
+        //   }
+        // }
         // Handle executable
         else if(input[0] == '\'' || input[0] == '\"'){
           system(input.c_str());
