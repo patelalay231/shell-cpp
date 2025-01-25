@@ -132,7 +132,7 @@ int main() {
           cout << filesystem::current_path().string() << endl;
         }
         // Handle the "cd" command
-        else if(command == "cd"){
+        // else if(command == "cd"){
         //   string path = input;
         //   // Navigating in absoulute path
         //   if(path[0] == '/'){
