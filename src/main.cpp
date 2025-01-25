@@ -162,6 +162,7 @@ int main() {
           string command_path = getFilePath("/tmp/quz/f1");
           if (!command_path.empty()) {
               string str = "\'exe  with  space\' " + command_path;
+              cout << str << endl;
               system(str.c_str());
           } else {
               cout << command << ": not found\n";
