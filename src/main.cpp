@@ -159,7 +159,6 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-          cout << command << endl;
           int i = 0;
           if(input[i] == '\"'){
             i++;
@@ -176,7 +175,7 @@ int main() {
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
               // Execute the command with arguments
-              string full_command = command + ' ' + input;
+              string full_command = command_path + ' ' + input;
               system(full_command.c_str());
           } else {
               cout << command << ": not found\n";
