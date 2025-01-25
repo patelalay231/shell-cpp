@@ -160,30 +160,30 @@ int main() {
         // For other commands, try to find their path and execute them
         else {
             int  i = 0;
+            string executable = "";
             if (input[i] == '\"') {
-              command = "";
               i++; // Skip the opening double quote
               while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
-                  command += input[i];
+                  executable += input[i];
                   i++;
               }
               i++; // Skip the closing double quote
-              command = command + " " + input.substr(i, input.length() - 1);
+              command = input.substr(i, input.length() - 1);
             }
             else if (input[i] == '\'') {
               command = "";
               i++; // Skip the opening single quote
               while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
-                  command += input[i];
+                  executable += input[i];
                   i++;
               }
               i++; // Skip the closing single quote
-              command = command + " " + input.substr(i, input.length() - 1);
+              command = input.substr(i, input.length() - 1);
             }
             string command_path = getFilePath(command);
             if (!command_path.empty()) {
                 // Execute the command with arguments
-                string full_command = command + ' ' + input;
+                string full_command = executable + ' ' + command + ' ' + input;
                 system(full_command.c_str());
             } else {
                 cout << command << ": not found\n";
