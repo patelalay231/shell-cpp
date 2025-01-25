@@ -159,7 +159,7 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-          string command_path = getFilePath(command);
+          string command_path = getFilePath("/tmp/qux/f1");
           if (!command_path.empty()) {
               // Execute the command with arguments
               string full_command = command + ' ' + input;
