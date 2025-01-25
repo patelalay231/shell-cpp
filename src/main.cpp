@@ -170,6 +170,7 @@ int main() {
             while(input[i] != '\'' || input[i] == ' ') i++;
             command = input.substr(i,input.length()-1);
           }
+          cout << command << endl;
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
               // Execute the command with arguments
