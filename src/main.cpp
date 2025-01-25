@@ -159,7 +159,7 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else{
-          string str = "\'exe  with  space\' " + "/tmp/quz/f1";
+          string str = "\'exe  with  space\' /tmp/quz/f1";
           cout << str << endl;
           system(str.c_str());
           string command_path = getFilePath(command);
