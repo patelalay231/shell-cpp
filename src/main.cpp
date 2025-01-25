@@ -99,7 +99,7 @@ void handleEcho(const string &input)
             ofstream outputFile(fileName);
             if (outputFile.is_open())
             {
-                outputFile << result << endl;
+                // outputFile << result << endl;
                 outputFile.close();
             }
             else{
