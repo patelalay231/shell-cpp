@@ -159,40 +159,42 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-            int  i = 0;
             string executable = "";
-            if (input[i] == '\"') {
-              i++; // Skip the opening double quote
-              while (i < input.length() && input[i] != '\"') { // Loop until the closing double quote
-                  executable += input[i];
-                  i++;
-              }
-              i++; // Skip the closing double quote
-              command = input.substr(i, input.length() - 1);
+            string command = "";
+            size_t i = 0;
+
+            // Handle quoted executable
+            if (input[i] == '"' || input[i] == '\'') {
+                char quote = input[i];
+                i++; // Skip opening quote
+                
+                // Extract executable name
+                while (i < input.length() && input[i] != quote) {
+                    executable += input[i];
+                    i++;
+                }
+                i++; // Skip closing quote
+                
+                // Skip any whitespace
+                while (i < input.length() && isspace(input[i])) {
+                    i++;
+                }
+                
+                // Extract command arguments
+                command = input.substr(i);
             }
-            else if (input[i] == '\'') {
-              command = "";
-              i++; // Skip the opening single quote
-              while (i < input.length() && input[i] != '\'') { // Loop until the closing single quote
-                  executable += input[i];
-                  i++;
-              }
-              i++; // Skip the closing single quote
-              command = input.substr(i, input.length() - 1);
-            }
-            if(executable.size() > 0){
-                string full_command = std::filesystem::canonical(executable) + ' ' + command;
+
+            // Execute the command
+            if (!executable.empty()) {
+                string full_command = executable + ' ' + command;
                 system(full_command.c_str());
-            }
-            else{
-              string command_path = getFilePath(command);
-              if (!command_path.empty()) {
-                  // Execute the command with arguments
-                  string full_command = command + ' ' + input;
-                  system(full_command.c_str());
-              } else {
-                  cout << command << ": not found\n";
-              }
+            } else {
+                string command_path = getFilePath(command);
+                if (!command_path.empty()) {
+                    system(input.c_str());
+                } else {
+                    cout << command << ": not found\n";
+                }
             }
         }
     }
