@@ -184,6 +184,7 @@ int main() {
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = executable + ' ' + command + ' ' + input;
+                cout << full_command << endl;
                 system(full_command.c_str());
             } else {
                 cout << command << ": not found\n";
