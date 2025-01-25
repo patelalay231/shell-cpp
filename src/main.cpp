@@ -69,7 +69,7 @@ int main() {
         // Extract the command and arguments
         string command = input.substr(i, input.find(" "));
         input.erase(i, input.find(" ") + 1);
-
+        cout << command;
         // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
             return 0;
