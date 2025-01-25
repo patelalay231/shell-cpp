@@ -180,7 +180,6 @@ int main() {
               i++; // Skip the closing single quote
               command = command + " " + input.substr(i, input.length() - 1);
             }
-            cout << command << endl;
             string command_path = getFilePath(command);
             if (!command_path.empty()) {
                 // Execute the command with arguments
