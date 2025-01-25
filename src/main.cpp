@@ -89,11 +89,9 @@ int main() {
             else{
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
-              }
-              // Add the space if it is with backslash
-              while (i+1 < input.length() && input[i] == '\\' && input[i+1] == ' ') {
-                temp += ' ';
-                i+=2;
+                if(i < input.length() && input[i-1] == '\\'){
+                  temp += temp[i++];
+                }
               }
 
               cout << temp << " ";
