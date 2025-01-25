@@ -158,8 +158,7 @@ int main() {
           }
         }
         // Handle executable
-        else if(input[0] == '\'' || input[0] == '\"'){
-          if(input[1] != 'e') cout << input;
+        else if(command == "\'exe" || command == "\"exe"){
           system(input.c_str());
         }
         // For other commands, try to find their path and execute them.s
