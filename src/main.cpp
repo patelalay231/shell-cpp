@@ -14,7 +14,8 @@ map<string, int> shell_builtins = {
     {"exit", 1},
     {"type", 1},
     {"pwd", 1},
-    {"cd" , 1}
+    {"cd", 1},
+    {"ls", 1}
 };
     
 // Function to get relative path if a command exists in the system PATH
@@ -176,6 +177,11 @@ int main() {
         // Handle the "cd" command
         else if(command == "cd"){
           handleCd(input);
+        }
+        else if(command == "ls"){
+          cout << input << endl;
+          // string from, to;
+          // getline(input,from,">");
         }
         // Handle executable
         else if(command == "\'exe" || command == "\"exe"){
