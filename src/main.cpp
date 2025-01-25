@@ -182,7 +182,7 @@ int main() {
           string from, to;
           stringstream s(input);
           getline(s,from,'>');
-          getline(s,to,' ');
+          getline(s,to,'>');
           cout << from << " " << to << endl;
         }
         // Handle executable
