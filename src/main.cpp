@@ -164,20 +164,20 @@ int main() {
             if(input[i] == '\''){
               i++;
               while(input[i] != '\'') i++;
-              command_path = command_path.substr(1,i);
+              command_path = input.substr(1,i);
             }
             else if(input[i] == '\"'){
               i++;
               while(input[i] != '\"') i++;
-              command_path = command_path.substr(1,i);
+              command_path = input.substr(1,i);
             }
-            command_path = getFilePath(command_path.c_str());
+            command_path = getFilePath(command_path);
             if (!command_path.empty()) {
                 // Execute the command with arguments
                 string full_command = command + ' ' + input;
                 system(full_command.c_str());
             } else {
-                cout << command << ": not found\n";
+                cout << command_path << ": not found\n";
             }
         }
     }
