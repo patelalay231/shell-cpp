@@ -164,13 +164,13 @@ int main() {
             i++;
             while (i < input.length() && input[i] != '\"') i++;
             i++; // Move past the closing quote
-            command = input.substr(i,input.length()-1);
+            command = input.substr(i,input.length()-i);
           }
           else if(input[i] == '\''){
             i++;
-             while (i < input.length() && input[i] != '\'') i++;
+            while (i < input.length() && input[i] != '\'') i++;
             i++; // Move past the closing quote
-            command = input.substr(i,input.length()-1);
+            command = input.substr(i,input.length()-i);
           }
           cout << command << endl;
           string command_path = getFilePath(command);
