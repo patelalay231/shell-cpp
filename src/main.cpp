@@ -50,7 +50,7 @@ int main() {
 
         // Extract the command and arguments
         string command = input.substr(0, input.find(" "));
-        // input.erase(0, input.find(" ") + 1);
+        input.erase(0, input.find(" ") + 1);
 
         // Handle the "exit" command to break the loop and terminate the program
         if (command == "exit") {
@@ -159,23 +159,10 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
-          int i = 0;
-          if(input[i] == '\"'){
-            i++;
-            while (i < input.length() && input[i] != '\"') i++;
-            i++; // Move past the closing quote
-            command = input.substr(i,input.length()-i);
-          }
-          else if(input[i] == '\''){
-            i++;
-            while (i < input.length() && input[i] != '\'') i++;
-            i++; // Move past the closing quote
-            command = input.substr(i,input.length()-i);
-          }
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
               // Execute the command with arguments
-              string full_command = command_path + ' ' + input;
+              string full_command = command + ' ' + input;
               system(full_command.c_str());
           } else {
               cout << command << ": not found\n";
