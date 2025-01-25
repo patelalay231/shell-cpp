@@ -176,6 +176,7 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else {
+          cout << command << endl;
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
               // Execute the command with arguments
