@@ -95,9 +95,11 @@ int main() {
                 else{
                   temp += input[i++];
                 }
-                
               }
-
+              // Skipping the spaces
+              while(i < input.length() && input[i] == ' '){
+                i++;
+              }
               cout << temp << " ";
             }
           }
