@@ -162,7 +162,7 @@ int main() {
           system(input.c_str());
         }
         else{
-          cout << command << endl;
+          cout << "hi" << endl;
           string command_path = getFilePath(command);
           if (!command_path.empty()) {
               system(input.c_str());
