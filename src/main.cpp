@@ -66,13 +66,10 @@ int main() {
             // handling single-quote message
             if(input[i] == '\''){
               i++;
-              while(i < input.length() && input[i] != '\''){
-                if(i+1 < input.length() && input[i] == '\\'){
-                  temp += input[i+1];
-                  i+=2;
-                }
-                else{
-                  temp += input[i++];
+              while(i < input.length()){
+                temp += input[i++];
+                if(i > 0 && input[i] == '\'' && input[i-1] != '\\'){
+                  break;
                 }
               }
               if (i < input.length() && input[i] == '\'') {
