@@ -179,7 +179,6 @@ int main() {
           handleCd(input);
         }
         else if(command == "ls"){
-          cout << input << endl;
           string from, to;
           stringstream s(input);
           getline(s,from,'>');
