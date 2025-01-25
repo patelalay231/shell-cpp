@@ -90,7 +90,7 @@ int main() {
               while(i < input.length() && input[i] != ' ' && input[i] != '\''){
                 temp += input[i++];
                 if(i < input.length() && input[i-1] == '\\'){
-                  temp += temp[i++];
+                  temp += input[i++];
                 }
               }
 
