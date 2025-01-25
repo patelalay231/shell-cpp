@@ -159,7 +159,7 @@ int main() {
         }
         // For other commands, try to find their path and execute them
         else if(input[0] == '\'' || input[0] == '\"'){
-          cout << "HELLO" << endl;
+          cout << input << endl;
         }
         else{
           // string str = "\'exe  with  space\' /tmp/quz/f1";
