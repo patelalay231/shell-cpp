@@ -32,12 +32,24 @@ string autocomplete(const string &input)
             res.push_back(key);
         }
     }
-    for (char **env = environ; *env != nullptr; ++env) {
-        string env_var = strtok(*env, "="); // Get the variable name before '='
-        if (env_var.substr(0, input.length()) == input) {
-            res.push_back(env_var);
+    
+    // Autocompletion for executable files.
+    if(res.empty()){
+        string path_env = getenv("PATH");
+        stringstream path_ss(path_env);
+        string dir;
+        
+        while(getline(path_ss,dir,':')){
+            for (const auto& entry : filesystem::directory_iterator(dir)) {
+                string filename = entry.path().filename();
+                if (filename.substr(0,input.length()) == input)
+                {
+                    res.push_back(filename);
+                }
+            }
         }
     }
+    
     return res.size() == 1 ? res[0] : "";
 }
 
