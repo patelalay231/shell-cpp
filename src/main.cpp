@@ -23,7 +23,7 @@ map<string, int> shell_builtins = {
 
 
 
-string autocomplete(const string &input)
+set<string> autocomplete(const string &input)
 {
     set<string> res;
     for (const auto &[key, _] : shell_builtins)
@@ -50,15 +50,29 @@ string autocomplete(const string &input)
             }
         }
         if(res.size() > 1) cout << "\a";
-        string str = "";
-        for(auto it: res){
-            if(str != "") str += "  ";
-            str += it;
-        }
-        return str;
+        return res;
     }
     
-    return res.size() == 1 ? *(res.begin()) : "";
+    return res;
+}
+
+string findCommonPrefix(const set<string>& suggestions) {
+    if (suggestions.empty()) return "";
+
+    // Start with the first string as the prefix
+    string prefix = *(suggestions.begin());
+
+    for (const auto& word : suggestions) {
+        // Compare character by character and reduce the prefix
+        size_t i = 0;
+        while (i < prefix.length() && i < word.length() && prefix[i] == word[i]) {
+            i++;
+        }
+        prefix = prefix.substr(0, i); // Update prefix to the common part
+        if (prefix.empty()) break;   // Exit early if no common prefix
+    }
+
+    return prefix;
 }
 
 // Function to split input into tokens
@@ -221,14 +235,26 @@ string readInputNonCanonical() {
                 cout << "\b \b"; // Erase the character from the terminal
             }
         } else if (c == '\t') { // Handle tab (autocomplete)
-            string suggestion = autocomplete(input);
+            set<string> suggestion = autocomplete(input);
             tabCount++;
-            if (!suggestion.empty() && suggestion.find(" ") == string::npos) {
-                cout << suggestion.substr(input.length()) << " "; // Show completion
-                input = suggestion + " ";
+            if (!suggestion.empty() && suggestion.size() == 1) {
+                auto str = *suggestion.begin();
+                cout << str.substr(input.length()) << " "; // Show completion
+                input = str + " ";
             }
-            else if(!suggestion.empty() && tabCount == 2){
-                cout << endl << suggestion << "\n$ " << input;
+            else if(suggestion.size() > 1){
+                if(tabCount == 1){
+                    string common_prefix = findCommonPrefix(suggestion);
+                    cout << common_prefix << endl;
+                }
+                else if(tabCount == 2){
+                    string matches = "";
+                    for(auto it : suggestion){
+                        if(matches != "") matches += "  ";
+                        matches += it;
+                    }
+                    cout << endl << matches << "\n$ " << input;
+                }
             }
             else{
                 cout << "\a";
