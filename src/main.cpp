@@ -247,7 +247,6 @@ string readInputNonCanonical() {
                     string common_prefix = findCommonPrefix(suggestion);
                     cout << common_prefix.substr(input.length());
                     input = common_prefix;
-                    tabCount = 0;
                 }
                 else if(tabCount == 2){
                     for(auto it : suggestion){
@@ -259,11 +258,13 @@ string readInputNonCanonical() {
             }
             else{
                 cout << "\a";
+                tabCount = 0;
             }
         }
         else { // Handle regular characters
             input += c;
             cout << c; // Echo the character
+            tabCount = 0;
         }
     }
 
