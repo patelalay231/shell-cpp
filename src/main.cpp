@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <set>
 #include <map>
 #include <cstdlib>
 #include <sstream>
 #include <sys/stat.h>
 #include <filesystem>
 #include <fstream>
-#include <vector>
 #include <termios.h>
 #include <unistd.h>
 
@@ -24,12 +25,12 @@ map<string, int> shell_builtins = {
 
 string autocomplete(const string &input)
 {
-    vector<string> res;
+    set<string> res;
     for (const auto &[key, _] : shell_builtins)
     {
         if (key.substr(0,input.length()) == input)
         {
-            res.push_back(key);
+            res.insert(key);
         }
     }
     
@@ -44,15 +45,20 @@ string autocomplete(const string &input)
                 string filename = entry.path().filename();
                 if (filename.substr(0,input.length()) == input)
                 {
-                    res.push_back(filename);
+                    res.insert(filename);
                 }
             }
         }
         if(res.size() > 1) cout << "\a";
-        return res;
+        string str = "";
+        for(auto it: res){
+            if(str != "") str += "  ";
+            str += it;
+        }
+        return str;
     }
     
-    return res.size() == 1 ? res[0] : "";
+    return res.size() == 1 ? *(res.begin()) : "";
 }
 
 // Function to split input into tokens
@@ -202,7 +208,7 @@ void handleEcho(const string &input)
 string readInputNonCanonical() {
     string input;
     char c;
-
+    int tabCount = 0;
     while (true) {
         c = getc(stdin); // Read one character at a time
 
@@ -216,9 +222,13 @@ string readInputNonCanonical() {
             }
         } else if (c == '\t') { // Handle tab (autocomplete)
             string suggestion = autocomplete(input);
-            if (!suggestion.empty()) {
+            tabCount++;
+            if (!suggestion.empty() && tabCount == 1) {
                 cout << suggestion.substr(input.length()) << " "; // Show completion
                 input = suggestion + " ";
+            }
+            else if(!suggestion.empty() && tabCount == 2){
+                cout << endl << suggestion << endl << "$ " << input;
             }
             else{
                 cout << "\a";
