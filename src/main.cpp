@@ -245,7 +245,7 @@ string readInputNonCanonical() {
             else if(suggestion.size() > 1){
                 if(tabCount == 1){
                     string common_prefix = findCommonPrefix(suggestion);
-                    cout << common_prefix << endl;
+                    input = common_prefix;
                 }
                 else if(tabCount == 2){
                     string matches = "";
