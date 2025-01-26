@@ -7,8 +7,33 @@
 #include <filesystem>
 #include <fstream>
 #include <vector>
+#include <termios.h>
+#include <unistd.h>
 
 using namespace std;
+
+// Map for built-in shell commands
+map<string, int> shell_builtins = {
+    {"echo", 1},
+    {"exit", 1},
+    {"type", 1},
+    {"pwd", 1},
+    {"cd", 1}};
+
+
+
+string autocomplete(const string &input)
+{
+    vector<string> res;
+    for (const auto &[key, _] : shell_builtins)
+    {
+        if (key.substr(0,input.length()) == input)
+        {
+            res.push_back(key);
+        }
+    }
+    return res.size() == 1 ? res[0] : "";
+}
 
 // Function to split input into tokens
 vector<string> tokenize(string input)
@@ -119,10 +144,10 @@ void handleEcho(const string &input)
             }
             return;
         }
-        else if(token == "1>>")
+        else if (token == "1>>")
         {
             fileName = tokens[++i];
-            ofstream outputFile(fileName,ios::app);
+            ofstream outputFile(fileName, ios::app);
             if (outputFile.is_open())
             {
                 outputFile << result << endl;
@@ -130,10 +155,10 @@ void handleEcho(const string &input)
             }
             return;
         }
-        else if(token == "2>>")
+        else if (token == "2>>")
         {
             fileName = tokens[++i];
-            ofstream outputFile(fileName,ios::app);
+            ofstream outputFile(fileName, ios::app);
             if (outputFile.is_open())
             {
                 cerr << result << endl;
@@ -154,27 +179,56 @@ void handleEcho(const string &input)
     cout << result << endl;
 }
 
+string readInputNonCanonical() {
+    string input;
+    char c;
+
+    while (true) {
+        c = getc(stdin); // Read one character at a time
+
+        if (c == '\n') { // User pressed Enter
+            cout << endl; // Move to the next line
+            break;
+        } else if (c == 127) { // Handle backspace
+            if (!input.empty()) {
+                input.pop_back(); // Remove the last character
+                cout << "\b \b"; // Erase the character from the terminal
+            }
+        } else if (c == '\t') { // Handle tab (autocomplete)
+            string suggestion = autocomplete(input);
+            if (!suggestion.empty()) {
+                cout << suggestion.substr(input.length()) << " "; // Show completion
+                input = suggestion;
+            }
+        } else { // Handle regular characters
+            input += c;
+            cout << c; // Echo the character
+        }
+    }
+
+    return input;
+}
+
+
 int main()
 {
     // Ensure the output is flushed immediately after each statement
     cout << unitbuf;
     cerr << unitbuf;
 
-    // Map for built-in shell commands
-    map<string, int> shell_builtins = {
-        {"echo", 1},
-        {"exit", 1},
-        {"type", 1},
-        {"pwd", 1},
-        {"cd", 1}};
+    termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    // Disable canonical mode and echoing
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
     // Start a loop to simulate the shell
     while (true)
     {
         cout << "$ "; // Prompt the user for input
 
-        string input;
-        getline(cin, input); // Get the user input
+        string input = readInputNonCanonical();   
 
         // Extract the command and arguments
         string command = input.substr(0, input.find(" "));
@@ -273,4 +327,5 @@ int main()
             }
         }
     }
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 }
