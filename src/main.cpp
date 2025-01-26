@@ -48,6 +48,8 @@ string autocomplete(const string &input)
                 }
             }
         }
+        if(res.size() > 1) cout << "\a";
+        return res;
     }
     
     return res.size() == 1 ? res[0] : "";
@@ -221,7 +223,8 @@ string readInputNonCanonical() {
             else{
                 cout << "\a";
             }
-        } else { // Handle regular characters
+        }
+        else { // Handle regular characters
             input += c;
             cout << c; // Echo the character
         }
