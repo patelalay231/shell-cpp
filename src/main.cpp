@@ -250,7 +250,6 @@ string readInputNonCanonical() {
                     tabCount = 0;
                 }
                 else if(tabCount == 2){
-                    string matches = "ffsf";
                     for(auto it : suggestion){
                         if(matches != "") matches += "  ";
                         matches += it;
