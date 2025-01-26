@@ -198,7 +198,7 @@ string readInputNonCanonical() {
             string suggestion = autocomplete(input);
             if (!suggestion.empty()) {
                 cout << suggestion.substr(input.length()) << " "; // Show completion
-                input = suggestion;
+                input = suggestion + " ";
             }
         } else { // Handle regular characters
             input += c;
