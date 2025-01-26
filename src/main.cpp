@@ -249,6 +249,7 @@ string readInputNonCanonical() {
                     input = common_prefix;
                 }
                 else if(tabCount == 2){
+                    string matches = "";
                     for(auto it : suggestion){
                         if(matches != "") matches += "  ";
                         matches += it;
