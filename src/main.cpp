@@ -248,6 +248,7 @@ string readInputNonCanonical() {
                     cout << common_prefix.substr(input.length());
                     input = common_prefix;
                     tabCount = 0;
+                    cout << "helo";
                 }
                 else if(tabCount == 2){
                     string matches = "";
