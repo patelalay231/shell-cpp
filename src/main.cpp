@@ -244,14 +244,13 @@ string readInputNonCanonical() {
             }
             else if(suggestion.size() > 1){
                 if(tabCount == 1){
-                    // cout << "helo";
                     string common_prefix = findCommonPrefix(suggestion);
                     cout << common_prefix.substr(input.length());
                     input = common_prefix;
                     tabCount = 0;
                 }
                 else if(tabCount == 2){
-                    string matches = "";
+                    string matches = "ffsf";
                     for(auto it : suggestion){
                         if(matches != "") matches += "  ";
                         matches += it;
