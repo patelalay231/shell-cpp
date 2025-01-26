@@ -228,7 +228,7 @@ string readInputNonCanonical() {
                 input = suggestion + " ";
             }
             else if(!suggestion.empty() && tabCount == 2){
-                cout << endl << suggestion << endl << "$ " << input;
+                cout << endl << suggestion;
             }
             else{
                 cout << "\a";
