@@ -200,6 +200,9 @@ string readInputNonCanonical() {
                 cout << suggestion.substr(input.length()) << " "; // Show completion
                 input = suggestion + " ";
             }
+            else{
+                cout << "\a";
+            }
         } else { // Handle regular characters
             input += c;
             cout << c; // Echo the character
