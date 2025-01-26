@@ -223,12 +223,12 @@ string readInputNonCanonical() {
         } else if (c == '\t') { // Handle tab (autocomplete)
             string suggestion = autocomplete(input);
             tabCount++;
-            if (!suggestion.empty() && && tabCount == 1) {
+            if (!suggestion.empty() && suggestion.find(" ") == string::npos) {
                 cout << suggestion.substr(input.length()) << " "; // Show completion
                 input = suggestion + " ";
             }
             else if(!suggestion.empty() && tabCount == 2){
-                cout << endl << suggestion ;
+                cout << endl << suggestion << "\n$ " << input;
             }
             else{
                 cout << "\a";
